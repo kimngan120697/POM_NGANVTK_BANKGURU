@@ -5,19 +5,25 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-public class Payment_001 {
+import commons.AbstractTest;
+
+public class Payment_001 extends AbstractTest{
 
 	WebDriver driver;
 
+	@Parameters({"browser"})
 	@BeforeTest
 	public void beforeTest() {
+		getBrowserDriver("firefox");
+		
 //		System.setProperty("webdriver.chrome.driver", ".\\browserDriver\\chromedriver.exe");
 //		driver = new ChromeDriver();
-		System.setProperty("webdriver.gecko.driver", ".\\browserDriver\\geckodriver.exe");
-		driver = new FirefoxDriver();
-		driver.get("https://github.com/kimngan120697/POM_NGANVTK_BANKGURU");
+//		System.setProperty("webdriver.gecko.driver", ".\\browserDriver\\geckodriver.exe");
+//		driver = new FirefoxDriver();
+//		driver.get("https://github.com/kimngan120697/POM_NGANVTK_BANKGURU");
 	}
 
 	@Test
@@ -72,6 +78,7 @@ public class Payment_001 {
 
 	@AfterTest
 	public void afterTest() {
+	driver.quit();
 	}
 
 }
