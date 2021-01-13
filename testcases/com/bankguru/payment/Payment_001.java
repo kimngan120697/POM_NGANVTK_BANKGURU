@@ -1,20 +1,24 @@
 package com.bankguru.payment;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Parameters;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 
 public class Payment_001 {
 
 	WebDriver driver;
 
-	@Parameters({"browser"})
 	@BeforeTest
 	public void beforeTest() {
+		System.setProperty("webdriver.chrome.driver", ".\\libraries\\chromedriver.exe");
+		driver = new ChromeDriver();
+//		System.setProperty("webdriver.gecko.driver", ".\\libraries\\geckodriver.exe");
+//
+//		driver=new FirefoxDriver();
+		driver.get("https://github.com/kimngan120697/POM_NGANVTK_BANKGURU");
 	}
 
 	@Test

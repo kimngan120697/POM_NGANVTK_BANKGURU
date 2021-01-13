@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<suite name="Bank Guru" parallel="false">
-  <test name="Run On FIREFOX">
-  <parameter name="browser" value="firefox"/>
-    <classes> 
-      <class name="com.bankguru.payment.Payment_001"/>
-    </classes>
-  </test> <!-- Test -->
-</suite> <!-- Suite -->
