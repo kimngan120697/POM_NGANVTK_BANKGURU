@@ -9,21 +9,30 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import commons.AbstractTest;
+import commons.PageGeneratorManager;
+import pageObjects.LoginPageObject;
+import pageObjects.RegisterPageObject;
 
 public class Payment_001 extends AbstractTest{
 
 	WebDriver driver;
-
+	LoginPageObject loginPage;
+	RegisterPageObject registerPage;
+	
 	@Parameters({"browser"})
 	@BeforeTest
 	public void beforeTest() {
 		getBrowserDriver("firefox");
 		
-//		System.setProperty("webdriver.chrome.driver", ".\\browserDriver\\chromedriver.exe");
-//		driver = new ChromeDriver();
-//		System.setProperty("webdriver.gecko.driver", ".\\browserDriver\\geckodriver.exe");
-//		driver = new FirefoxDriver();
-//		driver.get("https://github.com/kimngan120697/POM_NGANVTK_BANKGURU");
+		loginPage=PageGeneratorManager.getLoginPage(driver);
+		//Pre-Condition
+		loginPage.clickToHereLink();
+		registerPage=PageGeneratorManager.getRegisterPage(driver);
+		registerPage.inputToEmaiTextBox("");
+		registerPahe.clickSubmitButton();
+		
+		
+	
 	}
 
 	@Test
