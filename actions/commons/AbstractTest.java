@@ -13,6 +13,7 @@ import org.testng.Reporter;
 public class AbstractTest {
 	
 	WebDriver driver;
+	
 	public WebDriver getBrowserDriver(String browserName){
 		if (browserName.equalsIgnoreCase("chrome")) {
 			System.setProperty("webdriver.chrome.driver", ".\\browserDriver\\chromedriver.exe");

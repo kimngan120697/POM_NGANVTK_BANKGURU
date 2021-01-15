@@ -2,7 +2,9 @@ package pageObjects;
 
 import org.openqa.selenium.WebDriver;
 
-public class HomePageObject {
+import commons.AbstractPage;
+
+public class HomePageObject extends AbstractPage{
 	
 	WebDriver driver;
 

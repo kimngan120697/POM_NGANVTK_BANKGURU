@@ -18,6 +18,8 @@ import pageObjects.WithdrawalPageObject;
 
 public class PageGeneratorManager {
 	
+	
+	WebDriver driver;
 	public static LoginPageObject getLoginPage(WebDriver driver) {
 		return new LoginPageObject(driver);
 	}

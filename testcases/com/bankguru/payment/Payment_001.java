@@ -10,26 +10,40 @@ import org.testng.annotations.Test;
 
 import commons.AbstractTest;
 import commons.PageGeneratorManager;
+import pageObjects.HomePageObject;
 import pageObjects.LoginPageObject;
 import pageObjects.RegisterPageObject;
 
 public class Payment_001 extends AbstractTest{
 
+
 	WebDriver driver;
 	LoginPageObject loginPage;
 	RegisterPageObject registerPage;
+	HomePageObject homePage;
 	
+	String email="test12345@gmail.com";
 	@Parameters({"browser"})
 	@BeforeTest
 	public void beforeTest() {
-		getBrowserDriver("firefox");
+		driver=getBrowserDriver("firefox");
 		
 		loginPage=PageGeneratorManager.getLoginPage(driver);
+		String loginUrl=loginPage.getLoginUrl();
+		
 		//Pre-Condition
-		loginPage.clickToHereLink();
-		registerPage=PageGeneratorManager.getRegisterPage(driver);
-		registerPage.inputToEmaiTextBox("");
-		registerPahe.clickSubmitButton();
+		registerPage=loginPage.clickToHereLink();
+		registerPage.inputToEmaiTextBox(email);
+		registerPage.clickToSubmitButton();
+		
+		String userID=registerPage.getUserIDValue();
+		String passWord=registerPage.getPasswordValue();
+		
+		loginPage=registerPage.openLoginPage(loginUrl);
+		
+		loginPage.inputToUserIDTextbox(userID);
+		loginPage.inputToPasswordTextbox(passWord);
+		homePage = loginPage.clickToLoginButton();
 		
 		
 	
