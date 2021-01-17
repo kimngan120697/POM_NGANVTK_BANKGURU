@@ -12,6 +12,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import pageUIs.AbstractPageUI;
+
 public class AbstractPage {
 
 	private WebDriverWait waitExplicit;
@@ -297,5 +299,8 @@ public class AbstractPage {
 		driver.manage().timeouts().implicitlyWait(timeout, TimeUnit.SECONDS);
 	}
 
-	// Open Footer Menu
+	public void openBankGuruPage(WebDriver driver, String pageName) {
+		waitToElementClickable(driver,AbstractPageUI.DYNAMIC_MENU_LINK, pageName);
+		clickToElement(driver, AbstractPageUI.DYNAMIC_MENU_LINK, pageName);
+	}
 }

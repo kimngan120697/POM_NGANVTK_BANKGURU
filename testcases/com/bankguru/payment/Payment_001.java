@@ -14,44 +14,43 @@ import pageObjects.HomePageObject;
 import pageObjects.LoginPageObject;
 import pageObjects.RegisterPageObject;
 
-public class Payment_001 extends AbstractTest{
-
+public class Payment_001 extends AbstractTest {
 
 	WebDriver driver;
 	LoginPageObject loginPage;
 	RegisterPageObject registerPage;
 	HomePageObject homePage;
-	
-	String email="test12345@gmail.com";
-	@Parameters({"browser"})
+
+	String email = "test12345@gmail.com";
+
+	@Parameters({ "browser" })
 	@BeforeTest
 	public void beforeTest() {
-		driver=getBrowserDriver("firefox");
-		
-		loginPage=PageGeneratorManager.getLoginPage(driver);
-		String loginUrl=loginPage.getLoginUrl();
-		
-		//Pre-Condition
-		registerPage=loginPage.clickToHereLink();
+		driver = getBrowserDriver("firefox");
+
+		loginPage = PageGeneratorManager.getLoginPage(driver);
+		String loginUrl = loginPage.getLoginUrl();
+
+		// Pre-Condition
+		registerPage = loginPage.clickToHereLink();
 		registerPage.inputToEmaiTextBox(email);
 		registerPage.clickToSubmitButton();
-		
-		String userID=registerPage.getUserIDValue();
-		String passWord=registerPage.getPasswordValue();
-		
-		loginPage=registerPage.openLoginPage(loginUrl);
-		
+
+		String userID = registerPage.getUserIDValue();
+		String passWord = registerPage.getPasswordValue();
+
+		loginPage = registerPage.openLoginPage(loginUrl);
+
 		loginPage.inputToUserIDTextbox(userID);
 		loginPage.inputToPasswordTextbox(passWord);
 		homePage = loginPage.clickToLoginButton();
-		
-		
-	
 	}
 
 	@Test
 	public void Payment_01_CreateNewCustomer() {
 
+		homePage.clickToNewCustomerPage();
+		
 	}
 
 	@Test
@@ -101,7 +100,7 @@ public class Payment_001 extends AbstractTest{
 
 	@AfterTest
 	public void afterTest() {
-	driver.quit();
+		driver.quit();
 	}
 
 }
