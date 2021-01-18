@@ -2,7 +2,9 @@ package pageObjects;
 
 import org.openqa.selenium.WebDriver;
 
-public class EditAccountPageObject {
+import commons.AbstractPage;
+
+public class EditAccountPageObject extends AbstractPage {
 	WebDriver driver;
 
 	public EditAccountPageObject(WebDriver _driver) {

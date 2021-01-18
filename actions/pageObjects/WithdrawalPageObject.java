@@ -2,7 +2,9 @@ package pageObjects;
 
 import org.openqa.selenium.WebDriver;
 
-public class WithdrawalPageObject {
+import commons.AbstractPage;
+
+public class WithdrawalPageObject extends AbstractPage{
 	WebDriver driver;
 
 	public WithdrawalPageObject(WebDriver _driver) {

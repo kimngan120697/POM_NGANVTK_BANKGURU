@@ -2,7 +2,9 @@ package pageObjects;
 
 import org.openqa.selenium.WebDriver;
 
-public class BalanceEnquiryPageObject {
+import commons.AbstractPage;
+
+public class BalanceEnquiryPageObject extends AbstractPage{
 	
 	WebDriver driver;
 

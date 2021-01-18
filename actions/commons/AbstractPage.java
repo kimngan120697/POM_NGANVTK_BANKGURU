@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -21,6 +22,7 @@ public class AbstractPage {
 	private WebElement element;
 	private By byXpath;
 	private Select select;
+	private JavascriptExecutor javaScript;
 
 	/* ==============Selenium-Web-Browser=================== */
 
@@ -125,6 +127,17 @@ public class AbstractPage {
 		findElementByXpath(driver, locator).sendKeys(value);
 	}
 
+	public void senkeyToElement(WebDriver driver, String locator, String valueToSenKey, String... values) {
+		findElementByXpath(driver, locator, values).clear();
+		findElementByXpath(driver, locator, values).sendKeys(valueToSenKey);
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException ex) {
+			ex.printStackTrace();
+		}
+
+	}
+
 	public void selectItemInDropdown(WebDriver driver, String locator, String value) {
 		element = findElementByXpath(driver, locator);
 		select = new Select(element);
@@ -196,7 +209,8 @@ public class AbstractPage {
 			return false;
 		}
 	}
-	public boolean isElementSelected(WebDriver driver, String locator, String...values) {
+
+	public boolean isElementSelected(WebDriver driver, String locator, String... values) {
 		try {
 			element = findElementByXpath(driver, locator, values);
 			return element.isSelected();
@@ -204,8 +218,7 @@ public class AbstractPage {
 			return false;
 		}
 	}
-	
-	
+
 	public boolean isElementEnabled(WebDriver driver, String locator) {
 		return findElementByXpath(driver, locator).isEnabled();
 	}
@@ -229,10 +242,6 @@ public class AbstractPage {
 
 	}
 
-	public void hoverMouseToElement(WebDriver driver) {
-
-	}
-
 	public void rightClick(WebDriver driver) {
 
 	}
@@ -248,6 +257,17 @@ public class AbstractPage {
 	// Upload
 
 	// Javascript Excutor
+	public void removeAttributeInDOM(WebDriver driver, String locator, String attributeRemove) {
+		javaScript = (JavascriptExecutor) driver;
+		element = findElementByXpath(driver, locator);
+		javaScript.executeScript("arguments[0].removeAttribute('" + attributeRemove + "');", element);
+	}
+
+	public void removeAttributeInDOM(WebDriver driver, String locator, String attributeRemove, String... values) {
+		javaScript = (JavascriptExecutor) driver;
+		element = findElementByXpath(driver, locator, values);
+		javaScript.executeScript("arguments[0].removeAttribute('" + attributeRemove + "');", element);
+	}
 
 	// Wait
 	public void waitToElementPresence(WebDriver driver) {
@@ -299,8 +319,32 @@ public class AbstractPage {
 		driver.manage().timeouts().implicitlyWait(timeout, TimeUnit.SECONDS);
 	}
 
+	// BANK GURU - DYNAMIC
 	public void openBankGuruPage(WebDriver driver, String pageName) {
-		waitToElementClickable(driver,AbstractPageUI.DYNAMIC_MENU_LINK, pageName);
+		waitToElementClickable(driver, AbstractPageUI.DYNAMIC_MENU_LINK, pageName);
 		clickToElement(driver, AbstractPageUI.DYNAMIC_MENU_LINK, pageName);
+	}
+
+	public void inputToTextboxByName(WebDriver driver, String textboxName, String value) {
+		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_TEXTBOX_BY_NAME, textboxName);
+		if (textboxName.contains("dob")) {
+			removeAttributeInDOM(driver, AbstractPageUI.DYNAMIC_TEXTBOX_BY_NAME, "type", textboxName);
+		}
+		senkeyToElement(driver, AbstractPageUI.DYNAMIC_TEXTBOX_BY_NAME, value, textboxName);
+	}
+
+	public void selectRadioButtonByValue(WebDriver driver, String radioBtnValue) {
+		waitToElementClickable(driver, AbstractPageUI.DYNAMIC_RADIO_BUTTON_BY_VALUE, radioBtnValue);
+		clickToElement(driver, AbstractPageUI.DYNAMIC_RADIO_BUTTON_BY_VALUE, radioBtnValue);
+	}
+
+	public void inputToTextAreaByName(WebDriver driver, String textareaName, String value) {
+		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_TEXTAREA_BY_NAME, textareaName);
+		senkeyToElement(driver, AbstractPageUI.DYNAMIC_TEXTAREA_BY_NAME, value, textareaName);
+	}
+
+	public void clickToButtonByValue(WebDriver driver, String buttonValue) {
+		waitToElementClickable(driver, AbstractPageUI.DYNAMIC_BUTTON_BY_VALUE, buttonValue);
+		clickToElement(driver, AbstractPageUI.DYNAMIC_BUTTON_BY_VALUE, buttonValue);
 	}
 }

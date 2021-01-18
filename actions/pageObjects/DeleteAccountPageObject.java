@@ -2,7 +2,9 @@ package pageObjects;
 
 import org.openqa.selenium.WebDriver;
 
-public class DeleteAccountPageObject {
+import commons.AbstractPage;
+
+public class DeleteAccountPageObject extends AbstractPage{
 
 	WebDriver driver;
 	public DeleteAccountPageObject(WebDriver _driver) {
