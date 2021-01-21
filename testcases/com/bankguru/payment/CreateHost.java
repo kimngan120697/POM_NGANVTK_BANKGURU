@@ -43,7 +43,16 @@ public class CreateHost {
 	By loginButton = By.xpath("//button[@id='btn-login']");
 	By hostInformationButton = By.xpath("//span[@id='btn-route-hosts']");
 	By createHostButton = By.xpath("//button[@class='btn btn-link btn-add--host']");
-	By groupButton = By.xpath(" //span[contains(text(),'Select Group.')]");
+//	By itemsGroupList = By.xpath("//div[@class='dropdown-menu lc-dropdown-list top-placement ps show']//a//span");
+
+	By timezoneButton = By.xpath("//label[contains(text(),'Timezone')]/following-sibling::div//a[@data-toggle='dropdown']");
+	By itemsTimezoneList = By.xpath("//label[contains(text(),'Timezone\n" + 
+			"                                ')]//ancestor::form//ancestor::div[@class='tab-content']//ancestor::div[@class='host-tabs']/ancestor::div[@class='modal-content']/ancestor::div[@role='dialog']/following-sibling::div[@role='menu']/a/span");
+
+	By groupButton = By.xpath("//label[contains(text(),'Group')]/following-sibling::div//a[@data-toggle='dropdown']");
+	By itemsGroupList = By.xpath("//label[contains(text(),'Group ')]//ancestor::form//ancestor::div[@class='tab-content']//ancestor::div[@class='host-tabs']/ancestor::div[@class='modal-content']/ancestor::div[@role='dialog']/following-sibling::div[@role='menu']/a/span");
+
+	
 	By allItem = By.xpath("//div[@class='dropdown-menu lc-dropdown-list top-placement ps ps--active-y show']/a/span");
 	By editTopologyButton = By.xpath("//div[@class='ap-tooltip edit']/following-sibling::button");
 
@@ -66,59 +75,65 @@ public class CreateHost {
 		driver.findElement(hostInformationButton).click();
 	}
 
-	@Test(invocationCount = 10)
+	
+	@Test(invocationCount = 25)
 	public void TC_01_firewall() throws InterruptedException {
-		
 		driver.findElement(createHostButton).click();
 		Thread.sleep(1500);
+
+		selectItemInCustomDropdown(groupButton, itemsGroupList, "123456");
+
 		String hostIP = randomNumberHost() + "." + randomNumberHost() + "." + randomNumberHost() + "." + randomNumberHost();
-		String hostName = "Host-" + hostIP;
+		String hostName = hostIP;
 		driver.findElement(hostNameTextbox).sendKeys(hostName);
 		driver.findElement(hostIPTextbox).sendKeys(hostIP);
-		Thread.sleep(3000);
+		Thread.sleep(1000);
+		selectItemInCustomDropdown(timezoneButton, itemsTimezoneList, "(UTC-10:00) Hawaii");
+		Thread.sleep(1000);
 		driver.findElement(saveHostButton).click();
-
+		Thread.sleep(2000);
 	}
 
-	
 	public void selectItemInCustomDropdown(By parentXpath, By allItemsXpath, String expectedText) throws InterruptedException {
-
 		// 01. Click vào thẻ chứa Dropdown để show all items
-		waitExplicit.until(ExpectedConditions.elementToBeClickable(parentXpath));
+		//System.out.println("chuan bi wait");
+		//waitExplicit.until(ExpectedConditions.elementToBeClickable(parentXpath));
 		System.out.println("chua click");
-		driver.findElement(parentXpath).click();
+		jsExecutor = (JavascriptExecutor) driver;
+		jsExecutor.executeScript("arguments[0].click();", driver.findElement(parentXpath));
 		System.out.println("click roi");
 
 		// 02. Wai để tất cả các item (List WebElement) được xuất hiện trong DOM
-		System.out.println("waiting");
-		waitExplicit.until(ExpectedConditions.presenceOfAllElementsLocatedBy(allItemsXpath));
+		// System.out.println("waiting");
+		// waitExplicit.until(ExpectedConditions.presenceOfAllElementsLocatedBy(allItemsXpath));
 
 		// 03. Khai báo 1 List <Element> chứa all items bên trong.
 		List<WebElement> allItems = driver.findElements(allItemsXpath);
-
 		// 04. Tổng số lượng item trong 1 dropdown bằng bao nhiêu
 		System.out.println("Item size= " + allItems.size());
 
 		// 05. Duyệt qua từng cái item
 		for (WebElement item : allItems) {
-			System.out.println("Item: " + item.getText());
-
-			String actualItems = item.getText();
+			System.out.println("Item: " + item.getText() + ".");
 
 			// 05. Kiểm tra item nào đúng với mình cần chọn thì click vào
-			if (actualItems.equals(expectedText)) {
+			if (item.getText().equals(expectedText)) {
+				jsExecutor.executeScript("arguments[0].scrollIntoView(true);", item);
+				if (item.isDisplayed()) {
+					System.out.println("Item click by Selenium: " + item.getText());				
+					item.click();
+				} else {
+					jsExecutor.executeScript("arguments[0].scrollIntoView(true)", item);
+					Thread.sleep(2000);
+					System.out.println("Item click by js: " + item.getText());
 
-				// Trước khi click thì nên scroll đến element
-				jsExecutor.executeScript("arguments[0].scrollIntoView(true)", item);
-				Thread.sleep(2000);
-
-				// wait cho elemetn clickable
-				waitExplicit.until(ExpectedConditions.elementToBeClickable(item));
-				item.click();
+					jsExecutor.executeScript("arguments[0].click();", item);
+				}
 				Thread.sleep(2000);
 				break;
 			}
 		}
+
 	}
 
 	// Post condition

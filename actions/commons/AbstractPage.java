@@ -163,6 +163,10 @@ public class AbstractPage {
 	public String getTextElement(WebDriver driver, String locator) {
 		return findElementByXpath(driver, locator).getText();
 	}
+	
+	public String getTextElement(WebDriver driver, String locator, String... values) {
+		return findElementByXpath(driver, locator,values).getText();
+	}
 
 	public int countElementNumber(WebDriver driver, String locator) {
 		return findElementsByXpath(driver, locator).size();
@@ -319,6 +323,10 @@ public class AbstractPage {
 		driver.manage().timeouts().implicitlyWait(timeout, TimeUnit.SECONDS);
 	}
 
+	public void threadSleep(int miliSecond) throws InterruptedException {
+		Thread.sleep(miliSecond);
+	}
+	
 	// BANK GURU - DYNAMIC
 	public void openBankGuruPage(WebDriver driver, String pageName) {
 		waitToElementClickable(driver, AbstractPageUI.DYNAMIC_MENU_LINK, pageName);
@@ -326,25 +334,36 @@ public class AbstractPage {
 	}
 
 	public void inputToTextboxByName(WebDriver driver, String textboxName, String value) {
-		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_TEXTBOX_BY_NAME, textboxName);
+		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_TEXTBOX, textboxName);
 		if (textboxName.contains("dob")) {
-			removeAttributeInDOM(driver, AbstractPageUI.DYNAMIC_TEXTBOX_BY_NAME, "type", textboxName);
+			removeAttributeInDOM(driver, AbstractPageUI.DYNAMIC_TEXTBOX, "type", textboxName);
 		}
-		senkeyToElement(driver, AbstractPageUI.DYNAMIC_TEXTBOX_BY_NAME, value, textboxName);
+		senkeyToElement(driver, AbstractPageUI.DYNAMIC_TEXTBOX, value, textboxName);
 	}
 
 	public void selectRadioButtonByValue(WebDriver driver, String radioBtnValue) {
-		waitToElementClickable(driver, AbstractPageUI.DYNAMIC_RADIO_BUTTON_BY_VALUE, radioBtnValue);
-		clickToElement(driver, AbstractPageUI.DYNAMIC_RADIO_BUTTON_BY_VALUE, radioBtnValue);
+		waitToElementClickable(driver, AbstractPageUI.DYNAMIC_RADIO_BUTTON, radioBtnValue);
+		clickToElement(driver, AbstractPageUI.DYNAMIC_RADIO_BUTTON, radioBtnValue);
 	}
 
 	public void inputToTextAreaByName(WebDriver driver, String textareaName, String value) {
-		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_TEXTAREA_BY_NAME, textareaName);
-		senkeyToElement(driver, AbstractPageUI.DYNAMIC_TEXTAREA_BY_NAME, value, textareaName);
+		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_TEXTAREA, textareaName);
+		senkeyToElement(driver, AbstractPageUI.DYNAMIC_TEXTAREA, value, textareaName);
 	}
 
 	public void clickToButtonByValue(WebDriver driver, String buttonValue) {
-		waitToElementClickable(driver, AbstractPageUI.DYNAMIC_BUTTON_BY_VALUE, buttonValue);
-		clickToElement(driver, AbstractPageUI.DYNAMIC_BUTTON_BY_VALUE, buttonValue);
+		waitToElementClickable(driver, AbstractPageUI.DYNAMIC_BUTTON, buttonValue);
+		clickToElement(driver, AbstractPageUI.DYNAMIC_BUTTON, buttonValue);
 	}
+
+	public String getHeadingText(WebDriver driver) {
+		waitToElementVisible(driver, AbstractPageUI.HEADING_TEXT);
+		return getTextElement(driver, AbstractPageUI.HEADING_TEXT);
+	}
+	
+	public String getColumnValueByColumnName(WebDriver driver, String columnName) {
+		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_COLUMN_VALUE, columnName);
+		return getTextElement(driver, AbstractPageUI.DYNAMIC_COLUMN_VALUE, columnName);
+	}
+
 }

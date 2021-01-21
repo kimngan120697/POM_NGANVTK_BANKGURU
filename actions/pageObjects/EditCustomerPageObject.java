@@ -10,4 +10,5 @@ public class EditCustomerPageObject extends AbstractPage{
 	public EditCustomerPageObject(WebDriver _driver) {
 		this.driver = _driver;
 	}
+
 }

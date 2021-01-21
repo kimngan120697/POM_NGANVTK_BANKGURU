@@ -11,8 +11,4 @@ public class NewCustomerPageObject extends AbstractPage{
 	public NewCustomerPageObject(WebDriver _driver) {
 		this.driver = _driver;
 	}
-
-	public boolean isCreateSuccessulMessageIsDisplayed() {
-		return isElementDisplayed(driver, NewCustomerPageUI.CREATE_SUCCESSFUL_MESSAGE);
-	}
 }
