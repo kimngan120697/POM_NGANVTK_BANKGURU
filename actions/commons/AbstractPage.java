@@ -1,7 +1,10 @@
 package commons;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import javax.lang.model.util.Elements;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -163,9 +166,9 @@ public class AbstractPage {
 	public String getTextElement(WebDriver driver, String locator) {
 		return findElementByXpath(driver, locator).getText();
 	}
-	
+
 	public String getTextElement(WebDriver driver, String locator, String... values) {
-		return findElementByXpath(driver, locator,values).getText();
+		return findElementByXpath(driver, locator, values).getText();
 	}
 
 	public int countElementNumber(WebDriver driver, String locator) {
@@ -204,8 +207,71 @@ public class AbstractPage {
 		}
 	}
 
+	public boolean isElementUndisplayed(WebDriver driver, String locator) {
+		Date date = new Date();
+		System.out.println("Start time: " + date.toString());
+		overrideGlobalTimeout(driver, GlobalConstants.SHORT_TIMEOUT);
+		List<WebElement> elements = findElementsByXpath(driver, locator);
+		if (elements.size() == 0) {
+			System.out.println("Element not in DOM");
+			System.out.println("End time = " + date.toString());
+			overrideGlobalTimeout(driver, GlobalConstants.SHORT_TIMEOUT);
+			return true;
+		} else if (elements.size() > 0 && !elements.get(0).isDisplayed()) {
+			System.out.println("Element in DOM but not visible/displayed");
+			System.out.println("End time =" + date.toString());
+			overrideGlobalTimeout(driver, GlobalConstants.SHORT_TIMEOUT);
+			return true;
+		}else {
+			System.out.println("Element in DOM and visible");
+			overrideGlobalTimeout(driver, GlobalConstants.SHORT_TIMEOUT);
+			return false;
+		}
+	}
+	
+	public boolean isElementUndisplayed(WebDriver driver, String locator, String...values) {
+		Date date = new Date();
+		System.out.println("Start time: " + date.toString());
+		overrideGlobalTimeout(driver, GlobalConstants.SHORT_TIMEOUT);
+		List<WebElement> elements = findElementsByXpath(driver, locator,values);
+		if (elements.size() == 0) {
+			System.out.println("Element not in DOM");
+			System.out.println("End time = " + date.toString());
+			overrideGlobalTimeout(driver, GlobalConstants.SHORT_TIMEOUT);
+			return true;
+		} else if (elements.size() > 0 && !elements.get(0).isDisplayed()) {
+			System.out.println("Element in DOM but not visible/displayed");
+			System.out.println("End time =" + date.toString());
+			overrideGlobalTimeout(driver, GlobalConstants.SHORT_TIMEOUT);
+			return true;
+		}else {
+			System.out.println("Element in DOM and visible");
+			overrideGlobalTimeout(driver, GlobalConstants.SHORT_TIMEOUT);
+			return false;
+		}
+	}
+
+	public boolean isElementEnabled(WebDriver driver, String locator) {
+		try {
+			return findElementByXpath(driver, locator).isEnabled();
+		}catch(Exception ex)
+		{
+			return false;
+		}
+	}
+	
+	public boolean isElementEnabled(WebDriver driver, String locator,String...values) {
+		try {
+			return findElementByXpath(driver, locator,values).isEnabled();
+		}catch(Exception ex)
+		{
+			return false;
+		}
+	}
+	
+	//Radio button, Checkbox
 	// Danh cho Checkbox & radio button
-	public boolean isElementSelected(WebDriver driver, String locator) {
+public boolean isElementSelected(WebDriver driver, String locator) {
 		try {
 			element = findElementByXpath(driver, locator);
 			return element.isSelected();
@@ -221,10 +287,6 @@ public class AbstractPage {
 		} catch (Exception ex) {
 			return false;
 		}
-	}
-
-	public boolean isElementEnabled(WebDriver driver, String locator) {
-		return findElementByXpath(driver, locator).isEnabled();
 	}
 
 	public void hoverMouseToElement(WebDriver driver, String locator) {
@@ -326,7 +388,7 @@ public class AbstractPage {
 	public void threadSleep(int miliSecond) throws InterruptedException {
 		Thread.sleep(miliSecond);
 	}
-	
+
 	// BANK GURU - DYNAMIC
 	public void openBankGuruPage(WebDriver driver, String pageName) {
 		waitToElementClickable(driver, AbstractPageUI.DYNAMIC_MENU_LINK, pageName);
@@ -360,10 +422,15 @@ public class AbstractPage {
 		waitToElementVisible(driver, AbstractPageUI.HEADING_TEXT);
 		return getTextElement(driver, AbstractPageUI.HEADING_TEXT);
 	}
-	
+
 	public String getColumnValueByColumnName(WebDriver driver, String columnName) {
 		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_COLUMN_VALUE, columnName);
 		return getTextElement(driver, AbstractPageUI.DYNAMIC_COLUMN_VALUE, columnName);
+	}
+
+	public boolean isTextboxEnabled(WebDriver driver, String textboxName) {
+	 waitToElementVisible(driver, AbstractPageUI.DYNAMIC_TEXTBOX,textboxName);
+	 return isElementEnabled(driver, AbstractPageUI.DYNAMIC_TEXTBOX, textboxName);
 	}
 
 }

@@ -31,10 +31,14 @@ public class CreateHost {
 	Select select;
 	WebDriverWait waitExplicit;
 
-	String linkServer = "https://14.241.224.35:9443/";
+	String linkServer = "https://14.241.224.35:19443/";
 	String username = "logcenter";
 	String password = "!1q2w3e4r5t";
 
+	String groupName_TC01="1";
+	String groupName_TC02="111";
+	String hostIP = "192.16.223." + randomNumberHost();
+	
 	// Host Name create object
 	String hostNameItem = "VNIB";
 
@@ -43,7 +47,6 @@ public class CreateHost {
 	By loginButton = By.xpath("//button[@id='btn-login']");
 	By hostInformationButton = By.xpath("//span[@id='btn-route-hosts']");
 	By createHostButton = By.xpath("//button[@class='btn btn-link btn-add--host']");
-//	By itemsGroupList = By.xpath("//div[@class='dropdown-menu lc-dropdown-list top-placement ps show']//a//span");
 
 	By timezoneButton = By.xpath("//label[contains(text(),'Timezone')]/following-sibling::div//a[@data-toggle='dropdown']");
 	By itemsTimezoneList = By.xpath("//label[contains(text(),'Timezone\n" + 
@@ -73,25 +76,80 @@ public class CreateHost {
 		driver.findElement(passwordTextbox).sendKeys(password);
 		driver.findElement(loginButton).click();
 		driver.findElement(hostInformationButton).click();
+		forABC();
 	}
 
+//	public void ipNumber() {
+//		String ip="192.168.100";
+//		int endNumber;
+//		for(int i=1;i<255;i++) {
+//			endNumber=i++;
+//			ip="192.168.100."+endNumber;
+//		}
+//	}
 	
+	public void forABC() {
+		int i=1;
+		//int n;
+		
+		while(i<256) {
+			i=i+1;
+			System.out.print(i);
+		}
+		
+//		
+//		for(i=1;i<=255;i++)
+//		{
+//			i=i++;
+//		
+//		}
+//		return i;
+	}
 	@Test(invocationCount = 25)
-	public void TC_01_firewall() throws InterruptedException {
+	public void TC_01_Create_Host() throws InterruptedException {
+		String hostIP1 = "9.9."+randomNumberHost()+"." + randomNumberHost();
+		
+		try {
+			
+		Thread.sleep(1000);
+		driver.findElement(createHostButton).click();
+		Thread.sleep(1000);
+
+		selectItemInCustomDropdown(groupButton, itemsGroupList,groupName_TC01);
+
+		String hostName = hostIP1;
+		driver.findElement(hostNameTextbox).sendKeys(hostName);
+		driver.findElement(hostIPTextbox).sendKeys(hostIP1);
+		//Thread.sleep(500);
+		selectItemInCustomDropdown(timezoneButton, itemsTimezoneList, "(UTC-10:00) Hawaii");
+		Thread.sleep(500);
+		driver.findElement(saveHostButton).click();
+		//Thread.sleep(1000);
+		}catch(Exception ex) {
+			System.out.println("Error tc01: "+ex);
+		}
+	}
+	
+	//@Test(invocationCount = 25)
+	public void TC_02_Create_Host() throws InterruptedException {
+		String hostIP2 = "1.1.169." + randomNumberHost();
+		try {
 		driver.findElement(createHostButton).click();
 		Thread.sleep(1500);
 
-		selectItemInCustomDropdown(groupButton, itemsGroupList, "123456");
+		selectItemInCustomDropdown(groupButton, itemsGroupList, groupName_TC02);
 
-		String hostIP = randomNumberHost() + "." + randomNumberHost() + "." + randomNumberHost() + "." + randomNumberHost();
-		String hostName = hostIP;
+		String hostName = hostIP2;
 		driver.findElement(hostNameTextbox).sendKeys(hostName);
-		driver.findElement(hostIPTextbox).sendKeys(hostIP);
+		driver.findElement(hostIPTextbox).sendKeys(hostIP2);
 		Thread.sleep(1000);
 		selectItemInCustomDropdown(timezoneButton, itemsTimezoneList, "(UTC-10:00) Hawaii");
 		Thread.sleep(1000);
 		driver.findElement(saveHostButton).click();
 		Thread.sleep(2000);
+	}catch(Exception ex) {
+		System.out.println("Error tc01: "+ex);
+	}
 	}
 
 	public void selectItemInCustomDropdown(By parentXpath, By allItemsXpath, String expectedText) throws InterruptedException {
@@ -140,7 +198,7 @@ public class CreateHost {
 	@AfterClass
 	public void afterClass() {
 		// Tắt trình duyệt
-		driver.quit();
+		//driver.quit ();
 	}
 
 	public int randomNumber() {
@@ -148,6 +206,7 @@ public class CreateHost {
 		int number = rand.nextInt(99999);
 		return number;
 	}
+
 
 	public int randomNumberHost() {
 		Random rand = new Random();
