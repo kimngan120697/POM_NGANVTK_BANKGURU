@@ -15,7 +15,7 @@ public class AbstractPageUI {
 	public static final String DYNAMIC_RADIO_BUTTON="//input[@value='%s']";
 	
 	//Dropdown
-	public static final String DYNAMIC_DROPDOWN_BY_NAME="";
+	public static final String DYNAMIC_DROPDOWN_BY_NAME="//select[@name='%s']";
 	
 	//Button
 	public static final String DYNAMIC_BUTTON="//input[@value='%s']";
@@ -25,7 +25,5 @@ public class AbstractPageUI {
 	
 	//Verify Column Value
 	public static final String DYNAMIC_COLUMN_VALUE="//td[contains(text(),'%s')]/following-sibling::td";
-	
-	
 	
 }

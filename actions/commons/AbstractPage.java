@@ -141,10 +141,16 @@ public class AbstractPage {
 
 	}
 
-	public void selectItemInDropdown(WebDriver driver, String locator, String value) {
+	public void selectItemInDropdown(WebDriver driver, String locator, String itemValue) {
 		element = findElementByXpath(driver, locator);
 		select = new Select(element);
-		select.selectByVisibleText(value);
+		select.selectByVisibleText(itemValue);
+	}
+	
+	public void selectItemInDropdown(WebDriver driver, String locator, String itemValue,String...values) {
+		element = findElementByXpath(driver, locator, values);
+		select = new Select(element);
+		select.selectByVisibleText(itemValue);
 	}
 
 	public void getSelectedItemInDropdown(WebDriver driver) {
@@ -432,5 +438,9 @@ public boolean isElementSelected(WebDriver driver, String locator) {
 	 waitToElementVisible(driver, AbstractPageUI.DYNAMIC_TEXTBOX,textboxName);
 	 return isElementEnabled(driver, AbstractPageUI.DYNAMIC_TEXTBOX, textboxName);
 	}
-
+	
+	public void selectDropdownItemByName(WebDriver driver, String dropdownName, String itemValue) {
+		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_DROPDOWN_BY_NAME, dropdownName);
+		selectItemInDropdown(driver, AbstractPageUI.DYNAMIC_DROPDOWN_BY_NAME, itemValue, dropdownName);
+	}
 }

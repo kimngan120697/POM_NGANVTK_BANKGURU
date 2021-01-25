@@ -13,13 +13,14 @@ import commons.PageGeneratorManager;
 import pageObjects.EditCustomerPageObject;
 import pageObjects.HomePageObject;
 import pageObjects.LoginPageObject;
+import pageObjects.NewAccountPageObject;
 import pageObjects.NewCustomerPageObject;
 import pageObjects.RegisterPageObject;
 
 public class Payment_001 extends AbstractTest {
 	private String email, gender, customerName, dateOfBirth, address, city, state, pin, mobile, password, customerID;
 	private String editAddress, editCity, editState, editPin, editMobile, editEmail;
-
+	String accountType, initialDeposit;
 	@Parameters({ "browser" })
 	@BeforeTest
 	public void beforeTest() {
@@ -45,6 +46,10 @@ public class Payment_001 extends AbstractTest {
 		editMobile = "0123456786";
 		editEmail = "julia_auto"+randomNumber()+"@gmail.com";
 
+		//Create New Account
+		String accountType="Savings"; //Savings or Current
+		String initialDeposit="50000";
+		
 		loginPage = PageGeneratorManager.getLoginPage(driver);
 		String loginUrl = loginPage.getLoginUrl();
 
@@ -147,7 +152,15 @@ public class Payment_001 extends AbstractTest {
 
 	@Test
 	public void Payment_03_AddNewAccount() {
-
+		editCustomerPage.openBankGuruPage(driver, "New Account");
+		newAccountPage=PageGeneratorManager.getNewAccountPage(driver);
+		
+		newAccountPage.inputToTextboxByName(driver, "cusid", customerID);
+		newAccountPage.selectDropdownItemByName(driver, "selaccount",accountType );
+		newAccountPage.inputToTextboxByName(driver, "inideposit", initialDeposit);
+		newAccountPage.clickToButtonByValue(driver, "submit");
+		
+		
 		//Tao 2 account
 	}
 
@@ -197,7 +210,8 @@ public class Payment_001 extends AbstractTest {
 	private HomePageObject homePage;
 	private NewCustomerPageObject newCustomerPage;
 	private EditCustomerPageObject editCustomerPage;
-
+	private NewAccountPageObject newAccountPage;
+	
 	public int randomNumber() {
 		Random random = new Random();
 		int number = random.nextInt(99999);
