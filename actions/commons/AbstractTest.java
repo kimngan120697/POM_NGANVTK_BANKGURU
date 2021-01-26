@@ -2,6 +2,8 @@ package commons;
 
 import java.util.concurrent.TimeUnit;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 //import org.apache.commons.logging.Log;
 //import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.WebDriver;
@@ -107,6 +109,38 @@ public class AbstractTest {
 
 	protected boolean verifyEquals(Object actual, Object expected) {
 		return checkEquals(actual, expected);
+	}
+	
+	
+	// Get Current Day and Month and Year
+	protected String getCurrentDay() {
+		DateTime nowUTC= new DateTime(DateTimeZone.UTC);
+		int day=nowUTC.getDayOfMonth();
+		if(day<10) {
+			String dayValue="0"+day;
+			return dayValue;
+		}
+		return day+"";
+	}
+	
+	protected String getCurrentMonth() {
+		DateTime nowUTC=new DateTime(DateTimeZone.UTC);
+		int month=nowUTC.getMonthOfYear();
+		if(month<10) {
+			String monthValue="0"+month;
+			return monthValue;
+		}
+		return month+"";
+	}
+	
+	protected String getCurrentYear() {
+		DateTime nowUTC=new DateTime(DateTimeZone.UTC);
+		int year=nowUTC.getYear();
+		return year+"";
+	}
+	
+	protected String getToday() {
+		return getCurrentYear()+"-"+getCurrentMonth()+"-"+getCurrentDay();
 	}
 	
 }

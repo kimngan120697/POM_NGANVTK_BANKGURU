@@ -429,7 +429,7 @@ public boolean isElementSelected(WebDriver driver, String locator) {
 		return getTextElement(driver, AbstractPageUI.HEADING_TEXT);
 	}
 
-	public String getColumnValueByColumnName(WebDriver driver, String columnName) {
+	public String getRowValueByRowName(WebDriver driver, String columnName) {
 		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_COLUMN_VALUE, columnName);
 		return getTextElement(driver, AbstractPageUI.DYNAMIC_COLUMN_VALUE, columnName);
 	}
