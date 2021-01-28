@@ -12,6 +12,7 @@ import commons.AbstractTest;
 import commons.PageGeneratorManager;
 import pageObjects.BalanceEnquiryPageObject;
 import pageObjects.DeleteAccountPageObject;
+import pageObjects.DeleteCustomerPageObject;
 import pageObjects.DepositPageObject;
 import pageObjects.EditAccountPageObject;
 import pageObjects.EditCustomerPageObject;
@@ -30,7 +31,6 @@ public class Payment_001 extends AbstractTest {
 	private String accountType1, initialDeposit1;
 	private String editAccountType1;
 	private String accountType2, initialDeposit2;
-	private String amount, desctiption;
 
 	@Parameters({ "browser" })
 	@BeforeTest
@@ -223,7 +223,7 @@ public class Payment_001 extends AbstractTest {
 
 		// Edit First Account
 		editAccountPage.inputToTextboxByName(driver, "accountno", firstAccountID);
-		editAccountPage.clickToButtonByValue(driver, "submit");
+		editAccountPage.clickToButtonByValue(driver, "Submit");
 
 		// Verify textboxes disabled
 		verifyFalse(editAccountPage.isTextboxEnabled(driver, "txtcid"));
@@ -268,17 +268,17 @@ public class Payment_001 extends AbstractTest {
 	@Test
 	public void Payment_06_WithDrawFromCurrentAccount() {
 		depositPage.openBankGuruPage(driver, "Withdrawal");
-		withdrawalPage=PageGeneratorManager.getWithdrawalPage(driver);
-		
+		withdrawalPage = PageGeneratorManager.getWithdrawalPage(driver);
+
 		withdrawalPage.inputToTextboxByName(driver, "accountno", firstAccountID);
 		withdrawalPage.inputToTextboxByName(driver, "ammount", "15000");
 		withdrawalPage.inputToTextboxByName(driver, "desc", "Withdraw");
 		withdrawalPage.clickToButtonByValue(driver, "Submit");
-		
+
 		// Verify
 		verifyEquals(withdrawalPage.getHeadingText(driver), "Transaction details of Withdrawal for Account " + firstAccountID);
 		verifyEquals(withdrawalPage.getRowValueByRowName(driver, "Account No"), firstAccountID);
-		verifyEquals(withdrawalPage.getRowValueByRowName(driver, "Amount Credited"), "15000");
+		verifyEquals(withdrawalPage.getRowValueByRowName(driver, "Amount Debited"), "15000");
 		verifyEquals(withdrawalPage.getRowValueByRowName(driver, "Type of Transaction"), "Withdrawal");
 		verifyEquals(withdrawalPage.getRowValueByRowName(driver, "Description"), "Withdraw");
 		verifyEquals(withdrawalPage.getRowValueByRowName(driver, "Current Balance"), "40000");
@@ -288,52 +288,99 @@ public class Payment_001 extends AbstractTest {
 	public void Payment_07_TransferToAnotherAccount() {
 
 		withdrawalPage.openBankGuruPage(driver, "Fund Transfer");
-		fundTransferPage=PageGeneratorManager.getFundTransferPage(driver);
-		
+		fundTransferPage = PageGeneratorManager.getFundTransferPage(driver);
+
 		fundTransferPage.inputToTextboxByName(driver, "payersaccount", firstAccountID);
 		fundTransferPage.inputToTextboxByName(driver, "payeeaccount", secondAccountID);
-		fundTransferPage.inputToTextboxByName(driver, "ammount","10000");
+		fundTransferPage.inputToTextboxByName(driver, "ammount", "10000");
 		fundTransferPage.inputToTextboxByName(driver, "desc", "Transfer");
 		fundTransferPage.clickToButtonByValue(driver, "Submit");
-		//89200 89199
-		
-		//Verify
-		verifyEquals(fundTransferPage.getHeadingText(driver),"Fund Transfer Details");
-		verifyEquals(fundTransferPage.getRowValueByRowName(driver,"From Account Number"),firstAccountID);
-		verifyEquals(fundTransferPage.getRowValueByRowName(driver, "To Account Number"),secondAccountID);
-		verifyEquals(fundTransferPage.getRowValueByRowName(driver, "Amount"),"10000");
-		verifyEquals(fundTransferPage.getRowValueByRowName(driver, "Description"),"Transfer");
+
+		// Verify
+		verifyEquals(fundTransferPage.getHeadingText(driver), "Fund Transfer Details");
+		verifyEquals(fundTransferPage.getRowValueByRowName(driver, "From Account Number"), firstAccountID);
+		verifyEquals(fundTransferPage.getRowValueByRowName(driver, "To Account Number"), secondAccountID);
+		verifyEquals(fundTransferPage.getRowValueByRowName(driver, "Amount"), "10000");
+		verifyEquals(fundTransferPage.getRowValueByRowName(driver, "Description"), "Transfer");
 	}
 
 	@Test
 	public void Payment_08_CheckAccountBalance() {
 		fundTransferPage.openBankGuruPage(driver, "Balance Enquiry");
-		balanceEnquiryPage=PageGeneratorManager.getBalanceEnquiryPage(driver);
-		
+		balanceEnquiryPage = PageGeneratorManager.getBalanceEnquiryPage(driver);
+
+		// Check first account
 		balanceEnquiryPage.inputToTextboxByName(driver, "accountno", firstAccountID);
 		balanceEnquiryPage.clickToButtonByValue(driver, "Submit");
-		
-		verifyEquals(balanceEnquiryPage.getHeadingText(driver), "Balance Details for Account "+firstAccountID);
-		verifyEquals(balanceEnquiryPage.getRowValueByRowName(driver, "Account No"),firstAccountID);
-		verifyEquals(balanceEnquiryPage.getRowValueByRowName(driver, "Type of Account"),"Current" );
-		verifyEquals(balanceEnquiryPage.getRowValueByRowName(driver, "Balance"),"30000" );
+
+		verifyEquals(balanceEnquiryPage.getHeadingText(driver), "Balance Details for Account " + firstAccountID);
+		verifyEquals(balanceEnquiryPage.getRowValueByRowName(driver, "Account No"), firstAccountID);
+		verifyEquals(balanceEnquiryPage.getRowValueByRowName(driver, "Type of Account"), "Current");
+		verifyEquals(balanceEnquiryPage.getRowValueByRowName(driver, "Balance"), "30000");
+
 	}
 
 	@Test
 	public void Payment_09_DeleteAllAccount() {
 		// Xoa 2 account
-		
-		balanceEnquiryPage.openBankGuruPage(driver, "Delete Account");
-		deleteAccountPage=PageGeneratorManager.getDeleteAccountPage(driver);
-		
+
+		fundTransferPage.openBankGuruPage(driver, "Delete Account");
+		deleteAccountPage = PageGeneratorManager.getDeleteAccountPage(driver);
+
+		// Delete the first account
 		deleteAccountPage.inputToTextboxByName(driver, "accountno", firstAccountID);
-		balanceEnquiryPage.clickToButtonByValue(driver, "Submit");
+		deleteAccountPage.clickToButtonByValue(driver, "Submit");
+
+		verifyTrue(deleteAccountPage.isTextAlertIsDisplayedAndAccept(driver, "Do you really want to delete this Account?"));
+		verifyTrue(deleteAccountPage.isTextAlertIsDisplayedAndAccept(driver, "Account Deleted Sucessfully"));
+
+		deleteAccountPage.openBankGuruPage(driver, "Delete Account");
+
+		deleteAccountPage.inputToTextboxByName(driver, "accountno", firstAccountID);
+		deleteAccountPage.clickToButtonByValue(driver, "Submit");
+
+		verifyTrue(deleteAccountPage.isTextAlertIsDisplayedAndAccept(driver, "Do you really want to delete this Account?"));
+		verifyTrue(deleteAccountPage.isTextAlertIsDisplayedAndAccept(driver, "Account does not exist"));
+
+		// Delete the second account
+		deleteAccountPage.openBankGuruPage(driver, "Delete Account");
+
+		deleteAccountPage.inputToTextboxByName(driver, "accountno", secondAccountID);
+		deleteAccountPage.clickToButtonByValue(driver, "Submit");
+
+		verifyTrue(deleteAccountPage.isTextAlertIsDisplayedAndAccept(driver, "Do you really want to delete this Account?"));
+		verifyTrue(deleteAccountPage.isTextAlertIsDisplayedAndAccept(driver, "Account Deleted Sucessfully"));
+
+		deleteAccountPage.openBankGuruPage(driver, "Delete Account");
+
+		deleteAccountPage.inputToTextboxByName(driver, "accountno", secondAccountID);
+		deleteAccountPage.clickToButtonByValue(driver, "Submit");
+
+		verifyTrue(deleteAccountPage.isTextAlertIsDisplayedAndAccept(driver, "Do you really want to delete this Account?"));
+		verifyTrue(deleteAccountPage.isTextAlertIsDisplayedAndAccept(driver, "Account does not exist"));
 
 	}
 
 	@Test
 	public void Payment_10_DeleteCustomer() {
-
+		
+		deleteAccountPage.openBankGuruPage(driver, "Delete Customer");
+		deleteCustomerPage = PageGeneratorManager.getDeleteCustomerPage(driver);
+		
+		deleteCustomerPage.inputToTextboxByName(driver, "cusid", customerID);
+		deleteCustomerPage.clickToButtonByValue(driver, "Submit");
+		
+		verifyTrue(deleteCustomerPage.isTextAlertIsDisplayedAndAccept(driver, "Do you really want to delete this Customer?"));
+		verifyTrue(deleteCustomerPage.isTextAlertIsDisplayedAndAccept(driver, "Customer deleted Successfully"));
+		
+		deleteCustomerPage.openBankGuruPage(driver, "Delete Customer");
+		
+		deleteCustomerPage.inputToTextboxByName(driver, "cusid", customerID);
+		deleteCustomerPage.clickToButtonByValue(driver, "Submit");
+		
+		verifyTrue(deleteCustomerPage.isTextAlertIsDisplayedAndAccept(driver, "Do you really want to delete this Customer?"));
+		verifyTrue(deleteCustomerPage.isTextAlertIsDisplayedAndAccept(driver, "Customer does not exist!!"));
+		
 	}
 
 	@AfterTest
@@ -354,7 +401,8 @@ public class Payment_001 extends AbstractTest {
 	private FundTransferPageObject fundTransferPage;
 	private BalanceEnquiryPageObject balanceEnquiryPage;
 	private DeleteAccountPageObject deleteAccountPage;
-	
+	private DeleteCustomerPageObject deleteCustomerPage;
+
 	public int randomNumber() {
 		Random random = new Random();
 		int number = random.nextInt(99999);

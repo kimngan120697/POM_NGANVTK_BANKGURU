@@ -443,4 +443,12 @@ public boolean isElementSelected(WebDriver driver, String locator) {
 		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_DROPDOWN_BY_NAME, dropdownName);
 		selectItemInDropdown(driver, AbstractPageUI.DYNAMIC_DROPDOWN_BY_NAME, itemValue, dropdownName);
 	}
+	
+	public boolean isTextAlertIsDisplayedAndAccept(WebDriver driver, String alertText) {
+		waitForAlertPresence(driver);
+		String actualAlertText=getTextAlert(driver);
+		acceptAlert(driver);
+		return actualAlertText.equals(alertText);
+	}
+	
 }
