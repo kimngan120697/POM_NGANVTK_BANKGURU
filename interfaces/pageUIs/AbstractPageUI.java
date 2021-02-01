@@ -26,4 +26,11 @@ public class AbstractPageUI {
 	//Verify Column Value
 	public static final String DYNAMIC_COLUMN_VALUE="//td[contains(text(),'%s')]/following-sibling::td";
 	
+	//Dynamic Error Message by Textbox/Text area Name
+	
+	public static final String DYNAMIC_ERROR_MESSAGE_BY_TEXTBOX="//input[@name='%s']/following-sibling::label";
+	public static final String DYNAMIC_ERROR_MESSAGE_BY_TEXTAREA="//textarea[@name='%s']/following-sibling::label";
+
+	//Dynamic Fields Lable
+	public static final String DYNAMIC_FIELD_LABLE="//tr//td[contains(text(),'%s')]";
 }

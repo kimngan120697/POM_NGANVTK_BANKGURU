@@ -5,6 +5,7 @@ import java.util.Random;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
@@ -34,8 +35,8 @@ public class Payment_001 extends AbstractTest {
 
 	@Parameters({ "browser" })
 	@BeforeTest
-	public void beforeTest() {
-		driver = getBrowserDriver("firefox");
+	public void beforeTest(@Optional("firefox") String browserName) {
+		driver = getBrowserDriver(browserName);
 
 		// Create New Customer data
 		email = "autoByJu" + randomNumber() + "@gmail.com";
@@ -317,7 +318,6 @@ public class Payment_001 extends AbstractTest {
 		verifyEquals(balanceEnquiryPage.getRowValueByRowName(driver, "Account No"), firstAccountID);
 		verifyEquals(balanceEnquiryPage.getRowValueByRowName(driver, "Type of Account"), "Current");
 		verifyEquals(balanceEnquiryPage.getRowValueByRowName(driver, "Balance"), "30000");
-
 	}
 
 	@Test

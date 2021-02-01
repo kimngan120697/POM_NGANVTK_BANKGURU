@@ -8,6 +8,7 @@ import javax.lang.model.util.Elements;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -17,6 +18,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import pageUIs.AbstractPageUI;
+import pageUIs.NewCustomerPageUI;
 
 public class AbstractPage {
 
@@ -130,6 +132,14 @@ public class AbstractPage {
 		findElementByXpath(driver, locator).sendKeys(value);
 	}
 
+	public void clearDataToElement(WebDriver driver, String locator, String value) {
+		findElementByXpath(driver, locator).clear();
+	}
+	
+	public void clearDataToElement(WebDriver driver, String locator, String...value) {
+		findElementByXpath(driver, locator,value).clear();
+	}
+	
 	public void senkeyToElement(WebDriver driver, String locator, String valueToSenKey, String... values) {
 		findElementByXpath(driver, locator, values).clear();
 		findElementByXpath(driver, locator, values).sendKeys(valueToSenKey);
@@ -146,8 +156,8 @@ public class AbstractPage {
 		select = new Select(element);
 		select.selectByVisibleText(itemValue);
 	}
-	
-	public void selectItemInDropdown(WebDriver driver, String locator, String itemValue,String...values) {
+
+	public void selectItemInDropdown(WebDriver driver, String locator, String itemValue, String... values) {
 		element = findElementByXpath(driver, locator, values);
 		select = new Select(element);
 		select.selectByVisibleText(itemValue);
@@ -228,18 +238,18 @@ public class AbstractPage {
 			System.out.println("End time =" + date.toString());
 			overrideGlobalTimeout(driver, GlobalConstants.SHORT_TIMEOUT);
 			return true;
-		}else {
+		} else {
 			System.out.println("Element in DOM and visible");
 			overrideGlobalTimeout(driver, GlobalConstants.SHORT_TIMEOUT);
 			return false;
 		}
 	}
-	
-	public boolean isElementUndisplayed(WebDriver driver, String locator, String...values) {
+
+	public boolean isElementUndisplayed(WebDriver driver, String locator, String... values) {
 		Date date = new Date();
 		System.out.println("Start time: " + date.toString());
 		overrideGlobalTimeout(driver, GlobalConstants.SHORT_TIMEOUT);
-		List<WebElement> elements = findElementsByXpath(driver, locator,values);
+		List<WebElement> elements = findElementsByXpath(driver, locator, values);
 		if (elements.size() == 0) {
 			System.out.println("Element not in DOM");
 			System.out.println("End time = " + date.toString());
@@ -250,7 +260,7 @@ public class AbstractPage {
 			System.out.println("End time =" + date.toString());
 			overrideGlobalTimeout(driver, GlobalConstants.SHORT_TIMEOUT);
 			return true;
-		}else {
+		} else {
 			System.out.println("Element in DOM and visible");
 			overrideGlobalTimeout(driver, GlobalConstants.SHORT_TIMEOUT);
 			return false;
@@ -260,24 +270,22 @@ public class AbstractPage {
 	public boolean isElementEnabled(WebDriver driver, String locator) {
 		try {
 			return findElementByXpath(driver, locator).isEnabled();
-		}catch(Exception ex)
-		{
+		} catch (Exception ex) {
 			return false;
 		}
 	}
-	
-	public boolean isElementEnabled(WebDriver driver, String locator,String...values) {
+
+	public boolean isElementEnabled(WebDriver driver, String locator, String... values) {
 		try {
-			return findElementByXpath(driver, locator,values).isEnabled();
-		}catch(Exception ex)
-		{
+			return findElementByXpath(driver, locator, values).isEnabled();
+		} catch (Exception ex) {
 			return false;
 		}
 	}
-	
-	//Radio button, Checkbox
+
+	// Radio button, Checkbox
 	// Danh cho Checkbox & radio button
-public boolean isElementSelected(WebDriver driver, String locator) {
+	public boolean isElementSelected(WebDriver driver, String locator) {
 		try {
 			element = findElementByXpath(driver, locator);
 			return element.isSelected();
@@ -322,9 +330,23 @@ public boolean isElementSelected(WebDriver driver, String locator) {
 
 	}
 
-	public void sendKeyboardToElement(WebDriver driver) {
-
+	public void sendKeyboardToElement(WebDriver driver, String locator, Keys key) {
+		
+		element=findElementByXpath(driver, locator);
+		element.sendKeys(key);
 	}
+	
+	public void sendKeyboardToElement(WebDriver driver, String locator, Keys key, String...value) {
+		
+		element=findElementByXpath(driver, locator,value);
+		element.sendKeys(key);
+	}
+	
+//	public void pressTab(WebDriver driver) {
+//		action= new Actions(driver);
+//		action.keyDown(Keys.TAB).perform();
+//		action.keyUp(Keys.TAB).perform();
+//	}
 
 	// Upload
 
@@ -418,6 +440,7 @@ public boolean isElementSelected(WebDriver driver, String locator) {
 		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_TEXTAREA, textareaName);
 		senkeyToElement(driver, AbstractPageUI.DYNAMIC_TEXTAREA, value, textareaName);
 	}
+	
 
 	public void clickToButtonByValue(WebDriver driver, String buttonValue) {
 		waitToElementClickable(driver, AbstractPageUI.DYNAMIC_BUTTON, buttonValue);
@@ -435,20 +458,47 @@ public boolean isElementSelected(WebDriver driver, String locator) {
 	}
 
 	public boolean isTextboxEnabled(WebDriver driver, String textboxName) {
-	 waitToElementVisible(driver, AbstractPageUI.DYNAMIC_TEXTBOX,textboxName);
-	 return isElementEnabled(driver, AbstractPageUI.DYNAMIC_TEXTBOX, textboxName);
+		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_TEXTBOX, textboxName);
+		return isElementEnabled(driver, AbstractPageUI.DYNAMIC_TEXTBOX, textboxName);
 	}
-	
+
 	public void selectDropdownItemByName(WebDriver driver, String dropdownName, String itemValue) {
 		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_DROPDOWN_BY_NAME, dropdownName);
 		selectItemInDropdown(driver, AbstractPageUI.DYNAMIC_DROPDOWN_BY_NAME, itemValue, dropdownName);
 	}
-	
+
 	public boolean isTextAlertIsDisplayedAndAccept(WebDriver driver, String alertText) {
 		waitForAlertPresence(driver);
-		String actualAlertText=getTextAlert(driver);
+		String actualAlertText = getTextAlert(driver);
 		acceptAlert(driver);
 		return actualAlertText.equals(alertText);
 	}
 	
+	public void pressTabToTextboxByName(WebDriver driver, String textboxName) {
+		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_TEXTBOX, textboxName);
+		sendKeyboardToElement(driver, AbstractPageUI.DYNAMIC_TEXTBOX, Keys.TAB, textboxName);
+	}
+	
+	public void pressTabToTextAreaByName(WebDriver driver, String textAreaName) {
+		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_TEXTAREA,textAreaName);
+		sendKeyboardToElement(driver, AbstractPageUI.DYNAMIC_TEXTAREA, Keys.TAB,textAreaName);
+	}
+	
+	public String getErrorMessageByTextboxName(WebDriver driver, String textboxName) {
+		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_ERROR_MESSAGE_BY_TEXTBOX, textboxName);
+		String errorMessage=getTextElement(driver, AbstractPageUI.DYNAMIC_ERROR_MESSAGE_BY_TEXTBOX, textboxName);
+		return errorMessage;
+	}
+	
+	public String getErrorMessageByTextAreaName(WebDriver driver, String textboxName) {
+		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_ERROR_MESSAGE_BY_TEXTAREA, textboxName);
+		String errorMessage=getTextElement(driver, AbstractPageUI.DYNAMIC_ERROR_MESSAGE_BY_TEXTAREA, textboxName);
+		return errorMessage;
+	}
+	
+	public boolean isFieldLabelDisplay(WebDriver driver, String labelName) {
+		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_FIELD_LABLE, labelName);
+		return isElementDisplayed(driver, AbstractPageUI.DYNAMIC_FIELD_LABLE, labelName);
+	}
+
 }

@@ -9,6 +9,7 @@ import org.testng.annotations.BeforeTest;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -31,9 +32,9 @@ public class CreateHost {
 	Select select;
 	WebDriverWait waitExplicit;
 
-	String linkServer = "https://14.241.224.35:19443/";
+	String linkServer = "https://211.32.143.44:9443/";
 	String username = "logcenter";
-	String password = "!1q2w3e4r5t";
+	String password = "!1q2w3e4r";
 
 	String groupName_TC01="1";
 	String groupName_TC02="111";
@@ -49,11 +50,10 @@ public class CreateHost {
 	By createHostButton = By.xpath("//button[@class='btn btn-link btn-add--host']");
 
 	By timezoneButton = By.xpath("//label[contains(text(),'Timezone')]/following-sibling::div//a[@data-toggle='dropdown']");
-	By itemsTimezoneList = By.xpath("//label[contains(text(),'Timezone\n" + 
-			"                                ')]//ancestor::form//ancestor::div[@class='tab-content']//ancestor::div[@class='host-tabs']/ancestor::div[@class='modal-content']/ancestor::div[@role='dialog']/following-sibling::div[@role='menu']/a/span");
+	By itemsTimezoneList = By.xpath("//label[contains(text(),'Timezone')]//ancestor::form//ancestor::div[@class='tab-content']//ancestor::div[@class='host-tabs']/ancestor::div[@class='modal-content']/ancestor::div[@role='dialog']/following-sibling::div[@role='menu']//a//span");
 
 	By groupButton = By.xpath("//label[contains(text(),'Group')]/following-sibling::div//a[@data-toggle='dropdown']");
-	By itemsGroupList = By.xpath("//label[contains(text(),'Group ')]//ancestor::form//ancestor::div[@class='tab-content']//ancestor::div[@class='host-tabs']/ancestor::div[@class='modal-content']/ancestor::div[@role='dialog']/following-sibling::div[@role='menu']/a/span");
+	By itemsGroupList = By.xpath("//label[contains(text(),'Group')]//ancestor::form//ancestor::div[@class='tab-content']//ancestor::div[@class='host-tabs']/ancestor::div[@class='modal-content']/ancestor::div[@role='dialog']/following-sibling::div[@role='menu']//a//span");
 
 	
 	By allItem = By.xpath("//div[@class='dropdown-menu lc-dropdown-list top-placement ps ps--active-y show']/a/span");
@@ -76,42 +76,18 @@ public class CreateHost {
 		driver.findElement(passwordTextbox).sendKeys(password);
 		driver.findElement(loginButton).click();
 		driver.findElement(hostInformationButton).click();
-		forABC();
 	}
-
-//	public void ipNumber() {
-//		String ip="192.168.100";
-//		int endNumber;
-//		for(int i=1;i<255;i++) {
-//			endNumber=i++;
-//			ip="192.168.100."+endNumber;
-//		}
-//	}
-	
-	public void forABC() {
-		int i=1;
-		//int n;
-		
-		while(i<256) {
-			i=i+1;
-			System.out.print(i);
-		}
-		
-//		
-//		for(i=1;i<=255;i++)
-//		{
-//			i=i++;
-//		
-//		}
-//		return i;
-	}
+	AtomicInteger sequence=new AtomicInteger(0);
 	@Test(invocationCount = 25)
 	public void TC_01_Create_Host() throws InterruptedException {
-		String hostIP1 = "9.9."+randomNumberHost()+"." + randomNumberHost();
+
+		int count=sequence.addAndGet(1);
+		String hostIP1 = "199.119.112." + count;
 		
-		try {
-			
-		Thread.sleep(1000);
+		////div[@class='modal fade host-modal show']
+		
+		//String hostIP1 = "9.9."+randomNumberHost()+"." + count;
+		waitToElementClickable(createHostButton);
 		driver.findElement(createHostButton).click();
 		Thread.sleep(1000);
 
@@ -124,10 +100,7 @@ public class CreateHost {
 		selectItemInCustomDropdown(timezoneButton, itemsTimezoneList, "(UTC-10:00) Hawaii");
 		Thread.sleep(500);
 		driver.findElement(saveHostButton).click();
-		//Thread.sleep(1000);
-		}catch(Exception ex) {
-			System.out.println("Error tc01: "+ex);
-		}
+		Thread.sleep(3000);
 	}
 	
 	//@Test(invocationCount = 25)
@@ -219,4 +192,10 @@ public class CreateHost {
 		jsExecutor.executeScript("arguments[0].scrollIntoView(true);", element);
 	}
 
+	public void waitToElementClickable(By locator) {
+		element =driver.findElement(locator);
+		waitExplicit = new WebDriverWait(driver, GlobalConstants.LONG_TIMEOUT);
+		waitExplicit.until(ExpectedConditions.elementToBeClickable(element));
+	}
+	
 }
