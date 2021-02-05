@@ -15,6 +15,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -32,103 +33,276 @@ public class CreateHost {
 	Select select;
 	WebDriverWait waitExplicit;
 
-	String linkServer = "https://211.32.143.44:9443/";
+	String linkServer = "https://14.241.224.35:9443/";
 	String username = "logcenter";
-	String password = "!1q2w3e4r";
+	String password = "!1q2w3e4r5t";
 
-	String groupName_TC01="1";
-	String groupName_TC02="111";
-	String hostIP = "192.16.223." + randomNumberHost();
-	
+	String groupName_TC01 = "1";
+	String groupName_TC02 = "2";
+	String groupName_TC03 = "3";
+	String groupName_TC04 = "4";
+	String groupName_TC05 = "5";
+	String groupName_TC06 = "6";
+
+	String hostIP_TC01 = "99.99.44.";
+	String hostIP_TC02 = "99.100.34.";
+	String hostIP_TC03 = "99.101.31.";
+	String hostIP_TC04 = "99.102.26.";
+	String hostIP_TC05 = "99.103.20.";
+	String hostIP_TC06 = "99.104.4.";
+
 	// Host Name create object
 	String hostNameItem = "VNIB";
 
 	By usernameTextbox = By.xpath("//input[@id='login-username']");
 	By passwordTextbox = By.xpath("//input[@id='login-password']");
 	By loginButton = By.xpath("//button[@id='btn-login']");
+
 	By hostInformationButton = By.xpath("//span[@id='btn-route-hosts']");
 	By createHostButton = By.xpath("//button[@class='btn btn-link btn-add--host']");
 
 	By timezoneButton = By.xpath("//label[contains(text(),'Timezone')]/following-sibling::div//a[@data-toggle='dropdown']");
 	By itemsTimezoneList = By.xpath("//label[contains(text(),'Timezone')]//ancestor::form//ancestor::div[@class='tab-content']//ancestor::div[@class='host-tabs']/ancestor::div[@class='modal-content']/ancestor::div[@role='dialog']/following-sibling::div[@role='menu']//a//span");
-
 	By groupButton = By.xpath("//label[contains(text(),'Group')]/following-sibling::div//a[@data-toggle='dropdown']");
 	By itemsGroupList = By.xpath("//label[contains(text(),'Group')]//ancestor::form//ancestor::div[@class='tab-content']//ancestor::div[@class='host-tabs']/ancestor::div[@class='modal-content']/ancestor::div[@role='dialog']/following-sibling::div[@role='menu']//a//span");
 
-	
 	By allItem = By.xpath("//div[@class='dropdown-menu lc-dropdown-list top-placement ps ps--active-y show']/a/span");
 	By editTopologyButton = By.xpath("//div[@class='ap-tooltip edit']/following-sibling::button");
 
 	By hostNameTextbox = By.xpath("//input[@id='hostName']");
 	By hostIPTextbox = By.xpath("//input[@id='hostIp']");
 	By saveHostButton = By.xpath("//button[@class='btn btn-loading btn-primary']");
+	By cancelHostButton = By.xpath("//div[@role='dialog']//div[@class='modal-dialog modal-dialog-centered']//div[@class='modal-footer']//button[contains(text(),'Cancel')]");
+
+	// Code xử phần Error popup
+	By undefinedErrorPopup = By.xpath("//div[@class='modal-header']//h5[contains(text(),'Error')]");
+
+	By okButtonPopup = By.xpath("//div[@class='modal-footer']//button[contains(text(),'Ok')]");
 
 	// Pre-condition
 	@BeforeClass
 	public void beforeClass() {
-		System.setProperty("webdriver.gecko.driver", ".\\browserDriver\\geckodriver.exe");
-		driver = new FirefoxDriver();
+		System.setProperty("webdriver.chrome.driver", ".\\browserDriver\\chromedriver.exe");
+		driver = new ChromeDriver();
+		// System.setProperty("webdriver.gecko.driver", ".\\browserDriver\\geckodriver.exe");
+		// driver = new FirefoxDriver();
 		jsExecutor = (JavascriptExecutor) driver;
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
 		driver.get(linkServer);
+		String connectXpath = "//h1[contains(text(),'Your connection is not private')]";
+		if (driver.findElement(By.xpath(connectXpath)).isDisplayed()) {
+			driver.findElement(By.xpath("//button[@id='details-button']")).click();
+			driver.findElement(By.xpath("//a[@class='small-link']")).click();
+		}
 		driver.findElement(usernameTextbox).sendKeys(username);
 		driver.findElement(passwordTextbox).sendKeys(password);
 		driver.findElement(loginButton).click();
 		driver.findElement(hostInformationButton).click();
 	}
-	AtomicInteger sequence=new AtomicInteger(0);
+
+	AtomicInteger sequence = new AtomicInteger(0);
+
 	@Test(invocationCount = 25)
 	public void TC_01_Create_Host() throws InterruptedException {
 
-		int count=sequence.addAndGet(1);
-		String hostIP1 = "199.119.112." + count;
-		
-		////div[@class='modal fade host-modal show']
-		
-		//String hostIP1 = "9.9."+randomNumberHost()+"." + count;
+		// try {
+
+		int count = sequence.addAndGet(1);
+		String hostIP_TC = hostIP_TC01 + count;
 		waitToElementClickable(createHostButton);
+
 		driver.findElement(createHostButton).click();
 		Thread.sleep(1000);
-
-		selectItemInCustomDropdown(groupButton, itemsGroupList,groupName_TC01);
-
-		String hostName = hostIP1;
+		selectItemInCustomDropdown(groupButton, itemsGroupList, groupName_TC01);
+		String hostName = hostIP_TC;
 		driver.findElement(hostNameTextbox).sendKeys(hostName);
-		driver.findElement(hostIPTextbox).sendKeys(hostIP1);
-		//Thread.sleep(500);
-		selectItemInCustomDropdown(timezoneButton, itemsTimezoneList, "(UTC-10:00) Hawaii");
+		driver.findElement(hostIPTextbox).sendKeys(hostIP_TC);
 		Thread.sleep(500);
-		driver.findElement(saveHostButton).click();
-		Thread.sleep(3000);
-	}
-	
-	//@Test(invocationCount = 25)
-	public void TC_02_Create_Host() throws InterruptedException {
-		String hostIP2 = "1.1.169." + randomNumberHost();
-		try {
-		driver.findElement(createHostButton).click();
-		Thread.sleep(1500);
-
-		selectItemInCustomDropdown(groupButton, itemsGroupList, groupName_TC02);
-
-		String hostName = hostIP2;
-		driver.findElement(hostNameTextbox).sendKeys(hostName);
-		driver.findElement(hostIPTextbox).sendKeys(hostIP2);
-		Thread.sleep(1000);
 		selectItemInCustomDropdown(timezoneButton, itemsTimezoneList, "(UTC-10:00) Hawaii");
-		Thread.sleep(1000);
 		driver.findElement(saveHostButton).click();
 		Thread.sleep(2000);
-	}catch(Exception ex) {
-		System.out.println("Error tc01: "+ex);
+
+		if (driver.findElement(By.xpath("//div[@class='modal-header']//h5[contains(text(),'Error')]")).isDisplayed() == true) {
+			driver.findElement(okButtonPopup).click();
+			driver.findElement(cancelHostButton).click();
+
+		} else {
+			System.out.println("Error popup is displayed");
+		}
 	}
+
+	@Test(invocationCount = 25)
+	public void TC_02_Create_Host() throws InterruptedException {
+
+		try {
+
+			// String url = driver.getCurrentUrl();
+			// driver.get(url);
+			int count = sequence.addAndGet(1);
+			String hostIP_TC = hostIP_TC02 + count;
+			waitToElementClickable(createHostButton);
+			driver.findElement(createHostButton).click();
+			Thread.sleep(1000);
+			selectItemInCustomDropdown(groupButton, itemsGroupList, groupName_TC02);
+			String hostName = hostIP_TC;
+			driver.findElement(hostNameTextbox).sendKeys(hostName);
+			driver.findElement(hostIPTextbox).sendKeys(hostIP_TC);
+			Thread.sleep(500);
+			selectItemInCustomDropdown(timezoneButton, itemsTimezoneList, "(UTC-10:00) Hawaii");
+			// Thread.sleep(1000);
+			driver.findElement(saveHostButton).click();
+			Thread.sleep(2000);
+			if (driver.findElement(By.xpath("//div[@class='modal-header']//h5[contains(text(),'Error')]")).isDisplayed() == true) {
+				driver.findElement(okButtonPopup).click();
+				driver.findElement(cancelHostButton).click();
+
+			} else {
+				System.out.println("Error popup is displayed");
+			}
+		} catch (Exception ex) {
+			System.out.println("Error tc02: " + ex);
+		}
+	}
+
+	@Test(invocationCount = 25)
+	public void TC_03_Create_Host() throws InterruptedException {
+
+		try {
+			// String url = driver.getCurrentUrl();
+			// driver.get(url);
+			int count = sequence.addAndGet(1);
+			String hostIP_TC = hostIP_TC03 + count;
+			waitToElementClickable(createHostButton);
+			driver.findElement(createHostButton).click();
+			Thread.sleep(1000);
+			selectItemInCustomDropdown(groupButton, itemsGroupList, groupName_TC03);
+			String hostName = hostIP_TC;
+			driver.findElement(hostNameTextbox).sendKeys(hostName);
+			driver.findElement(hostIPTextbox).sendKeys(hostIP_TC);
+			Thread.sleep(500);
+			selectItemInCustomDropdown(timezoneButton, itemsTimezoneList, "(UTC-10:00) Hawaii");
+			// Thread.sleep(1000);
+			driver.findElement(saveHostButton).click();
+			Thread.sleep(2000);
+			if (driver.findElement(By.xpath("//div[@class='modal-header']//h5[contains(text(),'Error')]")).isDisplayed() == true) {
+				driver.findElement(okButtonPopup).click();
+				driver.findElement(cancelHostButton).click();
+
+			} else {
+				System.out.println("Error popup is displayed");
+			}
+		} catch (Exception ex) {
+			System.out.println("Error tc03: " + ex);
+		}
+	}
+
+	@Test(invocationCount = 25)
+	public void TC_04_Create_Host() throws InterruptedException {
+
+		try {
+			// String url = driver.getCurrentUrl();
+			// driver.get(url);
+			int count = sequence.addAndGet(1);
+			String hostIP_TC = hostIP_TC04 + count;
+			waitToElementClickable(createHostButton);
+			driver.findElement(createHostButton).click();
+			Thread.sleep(1000);
+			selectItemInCustomDropdown(groupButton, itemsGroupList, groupName_TC04);
+			String hostName = hostIP_TC;
+			driver.findElement(hostNameTextbox).sendKeys(hostName);
+			driver.findElement(hostIPTextbox).sendKeys(hostIP_TC);
+			Thread.sleep(500);
+			selectItemInCustomDropdown(timezoneButton, itemsTimezoneList, "(UTC-10:00) Hawaii");
+			// Thread.sleep(1000);
+			driver.findElement(saveHostButton).click();
+			Thread.sleep(2000);
+			
+			if (driver.findElement(By.xpath("//div[@class='modal-header']//h5[contains(text(),'Error')]")).isDisplayed() == true) {
+				driver.findElement(okButtonPopup).click();
+				driver.findElement(cancelHostButton).click();
+
+			} else {
+				System.out.println("Error popup is displayed");
+			}
+			
+		} catch (Exception ex) {
+			System.out.println("Error tc04: " + ex);
+		}
+	}
+
+	@Test(invocationCount = 25)
+	public void TC_05_Create_Host() throws InterruptedException {
+
+		try {
+			// String url = driver.getCurrentUrl();
+			// driver.get(url);
+			int count = sequence.addAndGet(1);
+			String hostIP_TC = hostIP_TC05 + count;
+			waitToElementClickable(createHostButton);
+			driver.findElement(createHostButton).click();
+			Thread.sleep(1000);
+			selectItemInCustomDropdown(groupButton, itemsGroupList, groupName_TC05);
+			String hostName = hostIP_TC;
+			driver.findElement(hostNameTextbox).sendKeys(hostName);
+			driver.findElement(hostIPTextbox).sendKeys(hostIP_TC);
+			Thread.sleep(500);
+			selectItemInCustomDropdown(timezoneButton, itemsTimezoneList, "(UTC-10:00) Hawaii");
+			// Thread.sleep(1000);
+			driver.findElement(saveHostButton).click();
+			Thread.sleep(2000);
+			
+			if (driver.findElement(By.xpath("//div[@class='modal-header']//h5[contains(text(),'Error')]")).isDisplayed() == true) {
+				driver.findElement(okButtonPopup).click();
+				driver.findElement(cancelHostButton).click();
+
+			} else {
+				System.out.println("Error popup is displayed");
+			}
+			
+		} catch (Exception ex) {
+			System.out.println("Error tc05: " + ex);
+		}
+	}
+	
+	@Test(invocationCount = 25)
+	public void TC_06_Create_Host() throws InterruptedException {
+
+		try {
+			// String url = driver.getCurrentUrl();
+			// driver.get(url);
+			int count = sequence.addAndGet(1);
+			String hostIP_TC = hostIP_TC06 + count;
+			waitToElementClickable(createHostButton);
+			driver.findElement(createHostButton).click();
+			Thread.sleep(1000);
+			selectItemInCustomDropdown(groupButton, itemsGroupList, groupName_TC06);
+			String hostName = hostIP_TC;
+			driver.findElement(hostNameTextbox).sendKeys(hostName);
+			driver.findElement(hostIPTextbox).sendKeys(hostIP_TC);
+			Thread.sleep(500);
+			selectItemInCustomDropdown(timezoneButton, itemsTimezoneList, "(UTC-10:00) Hawaii");
+			// Thread.sleep(1000);
+			driver.findElement(saveHostButton).click();
+			Thread.sleep(2000);
+			
+			if (driver.findElement(By.xpath("//div[@class='modal-header']//h5[contains(text(),'Error')]")).isDisplayed() == true) {
+				driver.findElement(okButtonPopup).click();
+				driver.findElement(cancelHostButton).click();
+
+			} else {
+				System.out.println("Error popup is displayed");
+			}
+			
+		} catch (Exception ex) {
+			System.out.println("Error tc06: " + ex);
+		}
 	}
 
 	public void selectItemInCustomDropdown(By parentXpath, By allItemsXpath, String expectedText) throws InterruptedException {
 		// 01. Click vào thẻ chứa Dropdown để show all items
-		//System.out.println("chuan bi wait");
-		//waitExplicit.until(ExpectedConditions.elementToBeClickable(parentXpath));
+		// System.out.println("chuan bi wait");
+		// waitExplicit.until(ExpectedConditions.elementToBeClickable(parentXpath));
 		System.out.println("chua click");
 		jsExecutor = (JavascriptExecutor) driver;
 		jsExecutor.executeScript("arguments[0].click();", driver.findElement(parentXpath));
@@ -151,16 +325,15 @@ public class CreateHost {
 			if (item.getText().equals(expectedText)) {
 				jsExecutor.executeScript("arguments[0].scrollIntoView(true);", item);
 				if (item.isDisplayed()) {
-					System.out.println("Item click by Selenium: " + item.getText());				
+					System.out.println("Item click by Selenium: " + item.getText());
 					item.click();
 				} else {
 					jsExecutor.executeScript("arguments[0].scrollIntoView(true)", item);
-					Thread.sleep(2000);
+					Thread.sleep(1000);
 					System.out.println("Item click by js: " + item.getText());
-
 					jsExecutor.executeScript("arguments[0].click();", item);
 				}
-				Thread.sleep(2000);
+				Thread.sleep(1000);
 				break;
 			}
 		}
@@ -171,7 +344,7 @@ public class CreateHost {
 	@AfterClass
 	public void afterClass() {
 		// Tắt trình duyệt
-		//driver.quit ();
+		driver.quit();
 	}
 
 	public int randomNumber() {
@@ -179,7 +352,6 @@ public class CreateHost {
 		int number = rand.nextInt(99999);
 		return number;
 	}
-
 
 	public int randomNumberHost() {
 		Random rand = new Random();
@@ -193,9 +365,9 @@ public class CreateHost {
 	}
 
 	public void waitToElementClickable(By locator) {
-		element =driver.findElement(locator);
+		element = driver.findElement(locator);
 		waitExplicit = new WebDriverWait(driver, GlobalConstants.LONG_TIMEOUT);
 		waitExplicit.until(ExpectedConditions.elementToBeClickable(element));
 	}
-	
+
 }

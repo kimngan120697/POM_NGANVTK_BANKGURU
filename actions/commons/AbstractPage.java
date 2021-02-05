@@ -4,21 +4,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import javax.lang.model.util.Elements;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import pageUIs.AbstractPageUI;
-import pageUIs.NewCustomerPageUI;
 
 public class AbstractPage {
 
@@ -28,7 +24,6 @@ public class AbstractPage {
 	private By byXpath;
 	private Select select;
 	private JavascriptExecutor javaScript;
-
 	/* ==============Selenium-Web-Browser=================== */
 
 	// Selenium WebBrowser
@@ -37,7 +32,6 @@ public class AbstractPage {
 		driver.manage().timeouts().implicitlyWait(GlobalConstants.LONG_TIMEOUT, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
 	}
-
 	public String getCurrentUrl(WebDriver driver) {
 		return driver.getCurrentUrl();
 	}
@@ -135,11 +129,11 @@ public class AbstractPage {
 	public void clearDataToElement(WebDriver driver, String locator, String value) {
 		findElementByXpath(driver, locator).clear();
 	}
-	
-	public void clearDataToElement(WebDriver driver, String locator, String...value) {
-		findElementByXpath(driver, locator,value).clear();
+
+	public void clearDataToElement(WebDriver driver, String locator, String... value) {
+		findElementByXpath(driver, locator, value).clear();
 	}
-	
+
 	public void senkeyToElement(WebDriver driver, String locator, String valueToSenKey, String... values) {
 		findElementByXpath(driver, locator, values).clear();
 		findElementByXpath(driver, locator, values).sendKeys(valueToSenKey);
@@ -331,22 +325,16 @@ public class AbstractPage {
 	}
 
 	public void sendKeyboardToElement(WebDriver driver, String locator, Keys key) {
-		
-		element=findElementByXpath(driver, locator);
+
+		element = findElementByXpath(driver, locator);
 		element.sendKeys(key);
 	}
-	
-	public void sendKeyboardToElement(WebDriver driver, String locator, Keys key, String...value) {
-		
-		element=findElementByXpath(driver, locator,value);
+
+	public void sendKeyboardToElement(WebDriver driver, String locator, Keys key, String... value) {
+
+		element = findElementByXpath(driver, locator, value);
 		element.sendKeys(key);
 	}
-	
-//	public void pressTab(WebDriver driver) {
-//		action= new Actions(driver);
-//		action.keyDown(Keys.TAB).perform();
-//		action.keyUp(Keys.TAB).perform();
-//	}
 
 	// Upload
 
@@ -440,7 +428,6 @@ public class AbstractPage {
 		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_TEXTAREA, textareaName);
 		senkeyToElement(driver, AbstractPageUI.DYNAMIC_TEXTAREA, value, textareaName);
 	}
-	
 
 	public void clickToButtonByValue(WebDriver driver, String buttonValue) {
 		waitToElementClickable(driver, AbstractPageUI.DYNAMIC_BUTTON, buttonValue);
@@ -473,32 +460,33 @@ public class AbstractPage {
 		acceptAlert(driver);
 		return actualAlertText.equals(alertText);
 	}
-	
+
 	public void pressTabToTextboxByName(WebDriver driver, String textboxName) {
 		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_TEXTBOX, textboxName);
 		sendKeyboardToElement(driver, AbstractPageUI.DYNAMIC_TEXTBOX, Keys.TAB, textboxName);
 	}
-	
+
 	public void pressTabToTextAreaByName(WebDriver driver, String textAreaName) {
-		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_TEXTAREA,textAreaName);
-		sendKeyboardToElement(driver, AbstractPageUI.DYNAMIC_TEXTAREA, Keys.TAB,textAreaName);
+		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_TEXTAREA, textAreaName);
+		sendKeyboardToElement(driver, AbstractPageUI.DYNAMIC_TEXTAREA, Keys.TAB, textAreaName);
 	}
-	
+
 	public String getErrorMessageByTextboxName(WebDriver driver, String textboxName) {
 		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_ERROR_MESSAGE_BY_TEXTBOX, textboxName);
-		String errorMessage=getTextElement(driver, AbstractPageUI.DYNAMIC_ERROR_MESSAGE_BY_TEXTBOX, textboxName);
+		String errorMessage = getTextElement(driver, AbstractPageUI.DYNAMIC_ERROR_MESSAGE_BY_TEXTBOX, textboxName);
 		return errorMessage;
 	}
-	
+
 	public String getErrorMessageByTextAreaName(WebDriver driver, String textboxName) {
 		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_ERROR_MESSAGE_BY_TEXTAREA, textboxName);
-		String errorMessage=getTextElement(driver, AbstractPageUI.DYNAMIC_ERROR_MESSAGE_BY_TEXTAREA, textboxName);
+		String errorMessage = getTextElement(driver, AbstractPageUI.DYNAMIC_ERROR_MESSAGE_BY_TEXTAREA, textboxName);
 		return errorMessage;
 	}
-	
+
 	public boolean isFieldLabelDisplay(WebDriver driver, String labelName) {
 		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_FIELD_LABLE, labelName);
 		return isElementDisplayed(driver, AbstractPageUI.DYNAMIC_FIELD_LABLE, labelName);
 	}
+
 
 }
