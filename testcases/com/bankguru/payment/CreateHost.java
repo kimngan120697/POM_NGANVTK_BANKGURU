@@ -44,12 +44,12 @@ public class CreateHost {
 	String groupName_TC05 = "5";
 	String groupName_TC06 = "6";
 
-	String hostIP_TC01 = "99.99.44.";
-	String hostIP_TC02 = "99.100.34.";
-	String hostIP_TC03 = "99.101.31.";
-	String hostIP_TC04 = "99.102.26.";
-	String hostIP_TC05 = "99.103.20.";
-	String hostIP_TC06 = "99.104.4.";
+	String hostIP_TC01 = "99.99.48.";
+	String hostIP_TC02 = "99.100.37.";
+	String hostIP_TC03 = "99.101.33.";
+	String hostIP_TC04 = "99.102.29.";
+	String hostIP_TC05 = "99.103.23.";
+	String hostIP_TC06 = "99.104.7.";
 
 	// Host Name create object
 	String hostNameItem = "VNIB";
