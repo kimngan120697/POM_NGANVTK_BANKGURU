@@ -9,7 +9,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -22,7 +21,7 @@ public class CreateObject {
 
 	String linkServer = "https://210.221.237.224:29090/";
 	String username = "logcenter";
-	String password = "!1q2w3e4r5r";
+	String password = "!1q2w3e4r5t";
 	
 	String hostNameItem="172.20.16.25";
 
@@ -31,7 +30,8 @@ public class CreateObject {
 	By loginButton = By.xpath("//button[@id='btn-login']");
 	By hostInformationButton = By.xpath("//span[@id='btn-route-hosts']");
 	By hostNameItemBox = By.xpath("//p[@data-toggle='tooltip' and text()='"+ hostNameItem +"']");
-
+	By objectTab=By.xpath("//ul//li[@class='nav-item object']//a");
+	
 	By addObjectButton = By.xpath("//button//span[@class='text' and contains(text(),'Connect')]");
 	By loggingTab=By.xpath("//ul//li[@class='nav-item']/a[@class='nav-link' and contains(text(),'Logging')]");
 	
@@ -44,8 +44,8 @@ public class CreateObject {
 	By rawDataAndParsingDataRadioButton=By.xpath("//div[@class='radio custom-radio']//label[contains(text(),'Raw Data & Parsing Data')]");
 	
 	//Select Data Format
+	String nameDataFormatValue;
 	By selectButton=By.xpath("//div[@class='col-auto']//button[contains(text(),'Select')]");
-	By ipsDataFormat=By.xpath("//div[@class='content']//h3[contains(text(),'IPS')]");
 	By trendMicroVenderButton=By.xpath("//ul//li//button[contains(text(),'TRENDMICRO')]");
 	By tippingPointModelButton=By.xpath("//ul//li//button[contains(text(),'TIPPINGPOINT')]");
 	By saveDataFormatButton=By.xpath("//div[@class='modal-dialog']//div[@class='data-format-detail']//button[contains(text(),'Save')]");
@@ -76,22 +76,47 @@ public class CreateObject {
 		driver.findElement(hostNameItemBox).click();
 	}
 
-	//@Test
+	@Test
 	public void TC_01_createObject() throws InterruptedException {
 
-		driver.findElement(addObjectButton).click();
-		driver.findElement(loggingTab).click();
-		driver.findElement(directoryObject).click();
-		driver.findElement(objectNameTextBox).sendKeys("");
-		driver.findElement(directoryPathTextBox).sendKeys("");
-		driver.findElement(fileNameTextBox).sendKeys("");
-		driver.findElement(rawDataAndParsingDataRadioButton).click();
-		driver.findElement(ipsDataFormat).click();
-		driver.findElement(trendMicroVenderButton).click();
-		driver.findElement(tippingPointModelButton).click();
-		driver.findElement(saveDataFormatButton).click();
-	}
+//		driver.findElement(objectTab).click();
+//		driver.findElement(addObjectButton).click();
+//		driver.findElement(loggingTab).click();
+//		driver.findElement(directoryObject).click();
+//		driver.findElement(objectNameTextBox).sendKeys(objectNameValue);
+//		Thread.sleep(700);
+//		driver.findElement(directoryPathTextBox).sendKeys(directoryPathValue);
+//		Thread.sleep(700);
+//		driver.findElement(fileNameTextBox).sendKeys(fileNameValue);
+//		Thread.sleep(700);
+//		driver.findElement(rawDataAndParsingDataRadioButton).click();
+//		driver.findElement(selectButton).click();
+//		driver.findElement(NameDataFormat).click();
+//		driver.findElement(trendMicroVenderButton).click();
+//		driver.findElement(tippingPointModelButton).click();
+//		driver.findElement(saveDataFormatButton).click();
+		
 	
+	}
+	public void createDirectoryObject(String objectNameValue, String directoryPathValue, String fileNameValue,String nameDataFormatValue) throws InterruptedException {
+//		By NameDataFormat=By.xpath("//div[@class='content']//h3[contains(text(),'"+nameDataFormatValue+"')]");
+//		driver.findElement(objectTab).click();
+//		driver.findElement(addObjectButton).click();
+//		driver.findElement(loggingTab).click();
+//		driver.findElement(directoryObject).click();
+//		driver.findElement(objectNameTextBox).sendKeys(objectNameValue);
+//		Thread.sleep(700);
+//		driver.findElement(directoryPathTextBox).sendKeys(directoryPathValue);
+//		Thread.sleep(700);
+//		driver.findElement(fileNameTextBox).sendKeys(fileNameValue);
+//		Thread.sleep(700);
+//		driver.findElement(rawDataAndParsingDataRadioButton).click();
+//		driver.findElement(selectButton).click();
+//		driver.findElement(NameDataFormat).click();
+//		driver.findElement(trendMicroVenderButton).click();
+//		driver.findElement(tippingPointModelButton).click();
+//		driver.findElement(saveDataFormatButton).click();
+	}
 	// Post condition
 	@AfterClass
 	public void afterClass() {
