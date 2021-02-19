@@ -31,6 +31,6 @@ public class AbstractPageUI {
 	public static final String DYNAMIC_ERROR_MESSAGE_BY_TEXTBOX="//input[@name='%s']/following-sibling::label";
 	public static final String DYNAMIC_ERROR_MESSAGE_BY_TEXTAREA="//textarea[@name='%s']/following-sibling::label";
 
-	//Dynamic Fields Lable
+	//Dynamic Fields Label
 	public static final String DYNAMIC_FIELD_LABLE="//tr//td[contains(text(),'%s')]";
 }

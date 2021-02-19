@@ -21,7 +21,7 @@ import org.joda.time.chrono.IslamicChronology;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterTest;
 
-public class NewCustomer_001 extends AbstractTest {
+public class NewCustomer extends AbstractTest {
 
 	HomePageObject homePage;
 	LoginPageObject loginPage;
