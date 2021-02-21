@@ -5,6 +5,7 @@ import java.util.Random;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import commons.AbstractTest;
@@ -27,12 +28,13 @@ public class DeleteCustomer extends AbstractTest {
 	DeleteCustomerPageObject deleteCustomerPage;
 
 	private String email, userID, passWord;
-	private String gender, customerName, dateOfBirth, address, city, state, pin, mobile, password;
+	private String gender,customerName, dateOfBirth, address, city, state, pin, mobile, password;
 	private String customerID;
 
+	@Parameters({"browser"})
 	@BeforeClass
-	public void beforeClass() {
-		driver=getBrowserDriver("firefox");
+	public void beforeClass(String browserName) {
+		driver=getBrowserDriver(browserName);
 		loginPage = PageGeneratorManager.getLoginPage(driver);
 		String loginUrl = loginPage.getLoginUrl();
 
@@ -93,11 +95,37 @@ public class DeleteCustomer extends AbstractTest {
 	}
 
 	@Test
-	public void TC_001() {
+	public void TC_01_verifyEmptyToCustomerID() {
+		deleteCustomerPage.inputToTextboxByName(driver, "cusid", "");
+		deleteCustomerPage.pressTabToTextboxByName(driver, "cusid");
+		verifyEquals(deleteCustomerPage.getErrorMessageByTextboxName(driver, "cusid"),"Customer ID is required");
 	}
-
-	@AfterClass
+	
+	@Test
+	public void TC_002_verifyInputCharacterToCustomerID() {
+		deleteCustomerPage.inputToTextboxByName(driver, "cusid", "abcd123");
+		verifyEquals(deleteCustomerPage.getErrorMessageByTextboxName(driver, "cusid"), "Characters are not allowed");
+	}
+	@Test
+	public void TC_003_verifyInputSpecialCharacterToCustomerID() {
+		deleteCustomerPage.inputToTextboxByName(driver, "cusid", "!@#123");
+		verifyEquals(deleteCustomerPage.getErrorMessageByTextboxName(driver, "cusid"),"Special characters are not allowed");
+	}
+	
+	@Test
+	public void TC_004_verifyInputSpaceToCustomerID() {
+		deleteCustomerPage.inputToTextboxByName(driver, "cusid", "123 123");
+		verifyEquals(deleteCustomerPage.getErrorMessageByTextboxName(driver, "cusid"),"Customer ID can not have blank space");
+	}
+	@Test
+	public void TC_005verifyInputFirstSpaceToCustomerID() {
+		deleteCustomerPage.inputToTextboxByName(driver, "cusid", " 12345");
+		verifyEquals(deleteCustomerPage.getErrorMessageByTextboxName(driver, "cusid"), "First character can not have space");
+	}
+	
+	@AfterClass(alwaysRun = true)
 	public void afterClass() {
+		closeBrowserAndDriver(driver);
 	}
 	
 	public int randomNumber() {

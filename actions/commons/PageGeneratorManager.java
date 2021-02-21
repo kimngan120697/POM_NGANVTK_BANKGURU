@@ -3,6 +3,7 @@ package commons;
 import org.openqa.selenium.WebDriver;
 
 import pageObjects.BalanceEnquiryPageObject;
+import pageObjects.ChangePasswordPageObject;
 import pageObjects.DeleteAccountPageObject;
 import pageObjects.DeleteCustomerPageObject;
 import pageObjects.DepositPageObject;
@@ -72,5 +73,7 @@ public class PageGeneratorManager {
 		return new WithdrawalPageObject(driver);
 	}
 	
-
+	public static ChangePasswordPageObject getChangePasswordPage(WebDriver driver) {
+		return new ChangePasswordPageObject(driver);
+	}
 }

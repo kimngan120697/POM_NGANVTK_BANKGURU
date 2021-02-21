@@ -383,9 +383,9 @@ public class Payment_001 extends AbstractTest {
 		
 	}
 
-	@AfterTest
+	@AfterTest(alwaysRun = true)
 	public void afterTest() {
-		driver.quit();
+		closeBrowserAndDriver(driver);
 	}
 
 	private WebDriver driver;

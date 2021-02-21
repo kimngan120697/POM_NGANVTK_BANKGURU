@@ -1,4 +1,4 @@
-package com.bankguru.payment;
+package com.vnib.logcenter;
 
 import java.util.List;
 import java.util.Random;
@@ -100,29 +100,32 @@ public class CreateHost {
 	@Test(invocationCount = 25)
 	public void TC_01_Create_Host() throws InterruptedException {
 
-		// try {
+		try {
 
-		int count = sequence.addAndGet(1);
-		String hostIP_TC = hostIP_TC01 + count;
-		waitToElementClickable(createHostButton);
+			int count = sequence.addAndGet(1);
+			String hostIP_TC = hostIP_TC01 + count;
+			waitToElementClickable(createHostButton);
 
-		driver.findElement(createHostButton).click();
-		Thread.sleep(1000);
-		selectItemInCustomDropdown(groupButton, itemsGroupList, groupName_TC01);
-		String hostName = hostIP_TC;
-		driver.findElement(hostNameTextbox).sendKeys(hostName);
-		driver.findElement(hostIPTextbox).sendKeys(hostIP_TC);
-		Thread.sleep(500);
-		selectItemInCustomDropdown(timezoneButton, itemsTimezoneList, "(UTC-10:00) Hawaii");
-		driver.findElement(saveHostButton).click();
-		Thread.sleep(2000);
+			driver.findElement(createHostButton).click();
+			Thread.sleep(1000);
+			selectItemInCustomDropdown(groupButton, itemsGroupList, groupName_TC01);
+			String hostName = hostIP_TC;
+			driver.findElement(hostNameTextbox).sendKeys(hostName);
+			driver.findElement(hostIPTextbox).sendKeys(hostIP_TC);
+			Thread.sleep(500);
+			selectItemInCustomDropdown(timezoneButton, itemsTimezoneList, "(UTC-10:00) Hawaii");
+			driver.findElement(saveHostButton).click();
+			Thread.sleep(2000);
 
-		if (driver.findElement(By.xpath("//div[@class='modal-header']//h5[contains(text(),'Error')]")).isDisplayed() == true) {
-			driver.findElement(okButtonPopup).click();
-			driver.findElement(cancelHostButton).click();
+			if (driver.findElement(By.xpath("//div[@class='modal-header']//h5[contains(text(),'Error')]")).isDisplayed() == true) {
+				driver.findElement(okButtonPopup).click();
+				driver.findElement(cancelHostButton).click();
 
-		} else {
-			System.out.println("Error popup is displayed");
+			} else {
+				System.out.println("Error popup is displayed");
+			}
+		} catch (Exception ex) {
+			System.out.println("Error tc01: " + ex);
 		}
 	}
 
@@ -130,9 +133,6 @@ public class CreateHost {
 	public void TC_02_Create_Host() throws InterruptedException {
 
 		try {
-
-			// String url = driver.getCurrentUrl();
-			// driver.get(url);
 			int count = sequence.addAndGet(1);
 			String hostIP_TC = hostIP_TC02 + count;
 			waitToElementClickable(createHostButton);
@@ -144,7 +144,6 @@ public class CreateHost {
 			driver.findElement(hostIPTextbox).sendKeys(hostIP_TC);
 			Thread.sleep(500);
 			selectItemInCustomDropdown(timezoneButton, itemsTimezoneList, "(UTC-10:00) Hawaii");
-			// Thread.sleep(1000);
 			driver.findElement(saveHostButton).click();
 			Thread.sleep(2000);
 			if (driver.findElement(By.xpath("//div[@class='modal-header']//h5[contains(text(),'Error')]")).isDisplayed() == true) {
@@ -163,8 +162,6 @@ public class CreateHost {
 	public void TC_03_Create_Host() throws InterruptedException {
 
 		try {
-			// String url = driver.getCurrentUrl();
-			// driver.get(url);
 			int count = sequence.addAndGet(1);
 			String hostIP_TC = hostIP_TC03 + count;
 			waitToElementClickable(createHostButton);
@@ -176,7 +173,6 @@ public class CreateHost {
 			driver.findElement(hostIPTextbox).sendKeys(hostIP_TC);
 			Thread.sleep(500);
 			selectItemInCustomDropdown(timezoneButton, itemsTimezoneList, "(UTC-10:00) Hawaii");
-			// Thread.sleep(1000);
 			driver.findElement(saveHostButton).click();
 			Thread.sleep(2000);
 			if (driver.findElement(By.xpath("//div[@class='modal-header']//h5[contains(text(),'Error')]")).isDisplayed() == true) {
@@ -195,8 +191,6 @@ public class CreateHost {
 	public void TC_04_Create_Host() throws InterruptedException {
 
 		try {
-			// String url = driver.getCurrentUrl();
-			// driver.get(url);
 			int count = sequence.addAndGet(1);
 			String hostIP_TC = hostIP_TC04 + count;
 			waitToElementClickable(createHostButton);
@@ -208,10 +202,9 @@ public class CreateHost {
 			driver.findElement(hostIPTextbox).sendKeys(hostIP_TC);
 			Thread.sleep(500);
 			selectItemInCustomDropdown(timezoneButton, itemsTimezoneList, "(UTC-10:00) Hawaii");
-			// Thread.sleep(1000);
 			driver.findElement(saveHostButton).click();
 			Thread.sleep(2000);
-			
+
 			if (driver.findElement(By.xpath("//div[@class='modal-header']//h5[contains(text(),'Error')]")).isDisplayed() == true) {
 				driver.findElement(okButtonPopup).click();
 				driver.findElement(cancelHostButton).click();
@@ -219,7 +212,7 @@ public class CreateHost {
 			} else {
 				System.out.println("Error popup is displayed");
 			}
-			
+
 		} catch (Exception ex) {
 			System.out.println("Error tc04: " + ex);
 		}
@@ -229,8 +222,6 @@ public class CreateHost {
 	public void TC_05_Create_Host() throws InterruptedException {
 
 		try {
-			// String url = driver.getCurrentUrl();
-			// driver.get(url);
 			int count = sequence.addAndGet(1);
 			String hostIP_TC = hostIP_TC05 + count;
 			waitToElementClickable(createHostButton);
@@ -242,10 +233,9 @@ public class CreateHost {
 			driver.findElement(hostIPTextbox).sendKeys(hostIP_TC);
 			Thread.sleep(500);
 			selectItemInCustomDropdown(timezoneButton, itemsTimezoneList, "(UTC-10:00) Hawaii");
-			// Thread.sleep(1000);
 			driver.findElement(saveHostButton).click();
 			Thread.sleep(2000);
-			
+
 			if (driver.findElement(By.xpath("//div[@class='modal-header']//h5[contains(text(),'Error')]")).isDisplayed() == true) {
 				driver.findElement(okButtonPopup).click();
 				driver.findElement(cancelHostButton).click();
@@ -253,18 +243,16 @@ public class CreateHost {
 			} else {
 				System.out.println("Error popup is displayed");
 			}
-			
+
 		} catch (Exception ex) {
 			System.out.println("Error tc05: " + ex);
 		}
 	}
-	
+
 	@Test(invocationCount = 25)
 	public void TC_06_Create_Host() throws InterruptedException {
 
 		try {
-			// String url = driver.getCurrentUrl();
-			// driver.get(url);
 			int count = sequence.addAndGet(1);
 			String hostIP_TC = hostIP_TC06 + count;
 			waitToElementClickable(createHostButton);
@@ -276,10 +264,9 @@ public class CreateHost {
 			driver.findElement(hostIPTextbox).sendKeys(hostIP_TC);
 			Thread.sleep(500);
 			selectItemInCustomDropdown(timezoneButton, itemsTimezoneList, "(UTC-10:00) Hawaii");
-			// Thread.sleep(1000);
 			driver.findElement(saveHostButton).click();
 			Thread.sleep(2000);
-			
+
 			if (driver.findElement(By.xpath("//div[@class='modal-header']//h5[contains(text(),'Error')]")).isDisplayed() == true) {
 				driver.findElement(okButtonPopup).click();
 				driver.findElement(cancelHostButton).click();
@@ -287,7 +274,7 @@ public class CreateHost {
 			} else {
 				System.out.println("Error popup is displayed");
 			}
-			
+
 		} catch (Exception ex) {
 			System.out.println("Error tc06: " + ex);
 		}
@@ -315,7 +302,7 @@ public class CreateHost {
 		for (WebElement item : allItems) {
 			System.out.println("Item: " + item.getText() + ".");
 
-			// 05. Kiểm tra item nào đúng với mình cần chọn thì click vào
+			// 05. Kiểm tra item nào đúng với mình cần ch�?n thì click vào
 			if (item.getText().equals(expectedText)) {
 				jsExecutor.executeScript("arguments[0].scrollIntoView(true);", item);
 				if (item.isDisplayed()) {

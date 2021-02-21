@@ -11,6 +11,7 @@ import pageObjects.NewCustomerPageObject;
 import pageObjects.RegisterPageObject;
 
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Parameters;
 
 import java.util.Random;
 
@@ -30,10 +31,11 @@ public class EditCustomer extends AbstractTest {
 	private String gender, customerName, dateOfBirth, address, city, state, pin, mobile, password;
 	private String customerID;
 	
+	@Parameters({"browser"})
 	@BeforeTest
-	public void beforeTest() {
+	public void beforeTest(String browserName) {
 
-		driver = getBrowserDriver("firefox");
+		driver = getBrowserDriver(browserName);
 
 		loginPage = PageGeneratorManager.getLoginPage(driver);
 		String loginUrl = loginPage.getLoginUrl();
@@ -228,9 +230,9 @@ public class EditCustomer extends AbstractTest {
 		verifyEquals(editCustomerPage.getErrorMessageByTextboxName(driver, "emailid"), "Email-ID is not valid");
 	}
 
-	@AfterTest
+	@AfterTest(alwaysRun = true)
 	public void afterTest() {
-		driver.quit();
+		closeBrowserAndDriver(driver);
 	}
 
 	public int randomNumber() {

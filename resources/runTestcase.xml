@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="Bank Guru" parallel="false">
-
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="commons.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="commons.MethodListener" />
+	</listeners>
 	<test name="RUN ON FIREFOX">
 		<parameter name="browser" value="firefox" />
 		<classes>
+			<class name="com.bankguru.customer.NewCustomer" />
+			<class name="com.bankguru.customer.EditCustomer" />
+			<class name="com.bankguru.customer.DeleteCustomer" />
 			<class name="com.bankguru.payment.Payment_001" />
-			<class name="com.bankguru.customer.NewCustomer_001" />
+			<class name="com.bankguru.login.ChangePassword" />
 		</classes>
 	</test>
-
-
+		<test name="RUN ON CHROME">
+		<parameter name="browser" value="chrome" />
+		<classes>
+			<class name="com.bankguru.customer.NewCustomer" />
+			<class name="com.bankguru.customer.EditCustomer" />
+			<class name="com.bankguru.customer.DeleteCustomer" />
+			<class name="com.bankguru.payment.Payment_001" />
+			<class name="com.bankguru.login.ChangePassword" />
+		</classes>
+	</test>
 </suite> <!-- Suite -->
+
+

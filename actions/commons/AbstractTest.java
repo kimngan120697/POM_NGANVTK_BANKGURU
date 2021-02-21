@@ -4,8 +4,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-//import org.apache.commons.logging.Log;
-//import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -18,11 +18,11 @@ public class AbstractTest {
 	
 	WebDriver driver;
 	//Khai bao bien log
-	//protected final Log log;
+	protected final Log log;
 	
 	//Them constructor vao de init thang log len
 	public AbstractTest() {
-		//log= LogFactory.getLog(getClass());
+		log= LogFactory.getLog(getClass());
 	}
 	public WebDriver getBrowserDriver(String browserName){
 		if (browserName.equalsIgnoreCase("chrome")) {
@@ -46,6 +46,7 @@ public class AbstractTest {
 		}
 		driver.get(GlobalConstants.DEV_URL);
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+		System.out.println("Abstract Test: "+driver.toString());
 		return driver;
 	}
 	
@@ -53,16 +54,16 @@ public class AbstractTest {
 		boolean pass = true;
 		try {
 			if (condition == true) {
-				//log.info(" -------------------------- PASSED -------------------------- ");
+				log.info(" -------------------------- PASSED -------------------------- ");
 			} else {
-				//log.info(" -------------------------- FAILED -------------------------- ");
+				log.info(" -------------------------- FAILED -------------------------- ");
 			}
 			Assert.assertTrue(condition);
 		} catch (Throwable e) {
 			pass = false;
 
-			// Add lỗi vào ReportNG
-			//VerificationFailures.getFailures().addFailureForTest(Reporter.getCurrentTestResult(), e);
+			//Add lỗi vào ReportNG
+			VerificationFailures.getFailures().addFailureForTest(Reporter.getCurrentTestResult(), e);
 			Reporter.getCurrentTestResult().setThrowable(e);
 		}
 		return pass;
@@ -76,14 +77,14 @@ public class AbstractTest {
 		boolean pass = true;
 		try {
 			if (condition == false) {
-				//log.info(" -------------------------- PASSED -------------------------- ");
+				log.info(" -------------------------- PASSED -------------------------- ");
 			} else {
-				//log.info(" -------------------------- FAILED -------------------------- ");
+				log.info(" -------------------------- FAILED -------------------------- ");
 			}
 			Assert.assertFalse(condition);
 		} catch (Throwable e) {
 			pass = false;
-			//VerificationFailures.getFailures().addFailureForTest(Reporter.getCurrentTestResult(), e);
+			VerificationFailures.getFailures().addFailureForTest(Reporter.getCurrentTestResult(), e);
 			Reporter.getCurrentTestResult().setThrowable(e);
 		}
 		return pass;
@@ -97,11 +98,11 @@ public class AbstractTest {
 		boolean pass = true;
 		try {
 			Assert.assertEquals(actual, expected);
-			//log.info(" -------------------------- PASSED -------------------------- ");
+			log.info(" -------------------------- PASSED -------------------------- ");
 		} catch (Throwable e) {
 			pass = false;
-			//log.info(" -------------------------- FAILED -------------------------- ");
-			//VerificationFailures.getFailures().addFailureForTest(Reporter.getCurrentTestResult(), e);
+			log.info(" -------------------------- FAILED -------------------------- ");
+			VerificationFailures.getFailures().addFailureForTest(Reporter.getCurrentTestResult(), e);
 			Reporter.getCurrentTestResult().setThrowable(e);
 		}
 		return pass;
@@ -109,6 +110,53 @@ public class AbstractTest {
 
 	protected boolean verifyEquals(Object actual, Object expected) {
 		return checkEquals(actual, expected);
+	}
+	
+	//Customer close browser
+	protected void closeBrowserAndDriver(WebDriver driver) {
+		try {
+			// Get ra tên của OS và convert qua chữ thường
+			String osName = System.getProperty("os.name").toLowerCase();
+			log.info("OS name = " + osName);
+
+			// Khai báo 1 biến command line để thực thi
+			String cmd = "";
+			if (driver != null) {
+				driver.quit();
+			}
+			
+			// Quit driver executable file in Task Manager
+			if (driver.toString().toLowerCase().contains("chrome")) {
+				if (osName.toLowerCase().contains("mac")) {
+					cmd = "pkill chromedriver";
+				} else if (osName.toLowerCase().contains("windows")) {
+					cmd = "taskkill /F /FI \"IMAGENAME eq chromedriver*\"";
+				}
+			} else if (driver.toString().toLowerCase().contains("internetexplorer")) {
+				if (osName.toLowerCase().contains("window")) {
+					cmd = "taskkill /F /FI \"IMAGENAME eq IEDriverServer*\"";
+				}
+			} else if (driver.toString().toLowerCase().contains("firefox")) {
+				if (osName.toLowerCase().contains("mac")) {
+					cmd = "pkill geckodriver";
+				} else if (osName.toLowerCase().contains("windows")) {
+					cmd = "taskkill /F /FI \"IMAGENAME eq geckodriver*\"";
+				}
+			} else if (driver.toString().toLowerCase().contains("edge")) {
+				if (osName.toLowerCase().contains("mac")) {
+					cmd = "pkill msedgedriver";
+				} else if (osName.toLowerCase().contains("windows")) {
+					cmd = "taskkill /F /FI \"IMAGENAME eq msedgedriver*\"";
+				}
+			}
+
+			Process process = Runtime.getRuntime().exec(cmd);
+			process.waitFor();
+
+			log.info("---------- QUIT BROWSER SUCCESS ----------");
+		} catch (Exception e) {
+			log.info(e.getMessage());
+		}
 	}
 	
 	

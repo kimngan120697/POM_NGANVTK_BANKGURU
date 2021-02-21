@@ -1,4 +1,4 @@
-package com.bankguru.payment;
+package com.vnib.logcenter;
 
 import java.util.List;
 import java.util.Random;

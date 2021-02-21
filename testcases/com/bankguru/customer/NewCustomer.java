@@ -10,14 +10,10 @@ import pageObjects.NewCustomerPageObject;
 import pageObjects.RegisterPageObject;
 
 import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
-
-import static org.testng.Assert.assertEquals;
 
 import java.util.Random;
 
-import org.joda.time.chrono.IslamicChronology;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterTest;
 
@@ -31,11 +27,11 @@ public class NewCustomer extends AbstractTest {
 	
 	private String email, userID, passWord;
 
-	//@Parameters({ "browser" })  @Optional("firefox")
+	@Parameters({ "browser" })
 	@BeforeTest
-	public void beforeTest() {
+	public void beforeTest(String browserName) {
 
-		driver = getBrowserDriver("firefox");
+		driver = getBrowserDriver(browserName);
 
 		loginPage = PageGeneratorManager.getLoginPage(driver);
 		String loginUrl = loginPage.getLoginUrl();
@@ -257,9 +253,9 @@ public class NewCustomer extends AbstractTest {
 		verifyTrue(newCustomerPage.isFieldLabelDisplay(driver, "Password"));
 	}
 	
-	@AfterTest
+	@AfterTest(alwaysRun = true)
 	public void afterTest() {
-		driver.quit();
+		closeBrowserAndDriver(driver);
 	}
 	
 	public int randomNumber() {
