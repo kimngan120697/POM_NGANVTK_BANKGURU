@@ -11,6 +11,7 @@ import pageObjects.NewCustomerPageObject;
 import pageObjects.RegisterPageObject;
 
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
 import java.util.Random;
@@ -33,7 +34,7 @@ public class EditCustomer extends AbstractTest {
 	
 	@Parameters({"browser"})
 	@BeforeTest
-	public void beforeTest(String browserName) {
+	public void beforeTest(@Optional("firefox") String browserName) {
 
 		driver = getBrowserDriver(browserName);
 
