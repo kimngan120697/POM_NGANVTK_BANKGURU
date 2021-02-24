@@ -9,6 +9,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -38,12 +39,12 @@ public class CreateHost {
 	String groupName_TC05 = "5";
 	String groupName_TC06 = "6";
 
-	String hostIP_TC01 = "99.99.48.";
-	String hostIP_TC02 = "99.100.37.";
-	String hostIP_TC03 = "99.101.33.";
-	String hostIP_TC04 = "99.102.29.";
-	String hostIP_TC05 = "99.103.23.";
-	String hostIP_TC06 = "99.104.7.";
+	String hostIP_TC01 = "99.99.22.";
+	String hostIP_TC02 = "99.100.12.";
+	String hostIP_TC03 = "99.101.10.";
+	String hostIP_TC04 = "99.102.8.";
+	String hostIP_TC05 = "99.103.8.";
+	String hostIP_TC06 = "99.104.9.";
 
 	// Host Name create object
 	String hostNameItem = "VNIB";
@@ -55,6 +56,8 @@ public class CreateHost {
 	By hostInformationButton = By.xpath("//span[@id='btn-route-hosts']");
 	By createHostButton = By.xpath("//button[@class='btn btn-link btn-add--host']");
 
+	By logCenterItemHost=By.xpath("//ul//li//p[contains(text(),'LogCenter')]");
+	
 	By timezoneButton = By.xpath("//label[contains(text(),'Timezone')]/following-sibling::div//a[@data-toggle='dropdown']");
 	By itemsTimezoneList = By.xpath("//label[contains(text(),'Timezone')]//ancestor::form//ancestor::div[@class='tab-content']//ancestor::div[@class='host-tabs']/ancestor::div[@class='modal-content']/ancestor::div[@role='dialog']/following-sibling::div[@role='menu']//a//span");
 	By groupButton = By.xpath("//label[contains(text(),'Group')]/following-sibling::div//a[@data-toggle='dropdown']");
@@ -78,8 +81,8 @@ public class CreateHost {
 	public void beforeClass() {
 		System.setProperty("webdriver.chrome.driver", ".\\browserDriver\\chromedriver.exe");
 		driver = new ChromeDriver();
-		// System.setProperty("webdriver.gecko.driver", ".\\browserDriver\\geckodriver.exe");
-		// driver = new FirefoxDriver();
+//		 System.setProperty("webdriver.gecko.driver", ".\\browserDriver\\geckodriver.exe");
+//		 driver = new FirefoxDriver();
 		jsExecutor = (JavascriptExecutor) driver;
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
@@ -93,6 +96,7 @@ public class CreateHost {
 		driver.findElement(passwordTextbox).sendKeys(password);
 		driver.findElement(loginButton).click();
 		driver.findElement(hostInformationButton).click();
+		//waitToElementClickable(createHostButton);
 	}
 
 	AtomicInteger sequence = new AtomicInteger(0);
@@ -104,18 +108,23 @@ public class CreateHost {
 
 			int count = sequence.addAndGet(1);
 			String hostIP_TC = hostIP_TC01 + count;
+			//System.out.println("Start time wait Create Host button: "+java.time.LocalDateTime.now()); 
 			waitToElementClickable(createHostButton);
+			//System.out.println("End time wait Create Host button: "+java.time.LocalDateTime.now()); 
 
+			//System.out.println("Start time click Create Host button: "+java.time.LocalDateTime.now()); 
 			driver.findElement(createHostButton).click();
+			//System.out.println("End time click Create Host button: "+java.time.LocalDateTime.now()); 
 			Thread.sleep(1000);
 			selectItemInCustomDropdown(groupButton, itemsGroupList, groupName_TC01);
 			String hostName = hostIP_TC;
 			driver.findElement(hostNameTextbox).sendKeys(hostName);
+			Thread.sleep(500);
 			driver.findElement(hostIPTextbox).sendKeys(hostIP_TC);
 			Thread.sleep(500);
 			selectItemInCustomDropdown(timezoneButton, itemsTimezoneList, "(UTC-10:00) Hawaii");
 			driver.findElement(saveHostButton).click();
-			Thread.sleep(2000);
+			Thread.sleep(1000);
 
 			if (driver.findElement(By.xpath("//div[@class='modal-header']//h5[contains(text(),'Error')]")).isDisplayed() == true) {
 				driver.findElement(okButtonPopup).click();
@@ -145,7 +154,7 @@ public class CreateHost {
 			Thread.sleep(500);
 			selectItemInCustomDropdown(timezoneButton, itemsTimezoneList, "(UTC-10:00) Hawaii");
 			driver.findElement(saveHostButton).click();
-			Thread.sleep(2000);
+			Thread.sleep(1000);
 			if (driver.findElement(By.xpath("//div[@class='modal-header']//h5[contains(text(),'Error')]")).isDisplayed() == true) {
 				driver.findElement(okButtonPopup).click();
 				driver.findElement(cancelHostButton).click();
@@ -174,7 +183,7 @@ public class CreateHost {
 			Thread.sleep(500);
 			selectItemInCustomDropdown(timezoneButton, itemsTimezoneList, "(UTC-10:00) Hawaii");
 			driver.findElement(saveHostButton).click();
-			Thread.sleep(2000);
+			Thread.sleep(1000);
 			if (driver.findElement(By.xpath("//div[@class='modal-header']//h5[contains(text(),'Error')]")).isDisplayed() == true) {
 				driver.findElement(okButtonPopup).click();
 				driver.findElement(cancelHostButton).click();
@@ -203,7 +212,7 @@ public class CreateHost {
 			Thread.sleep(500);
 			selectItemInCustomDropdown(timezoneButton, itemsTimezoneList, "(UTC-10:00) Hawaii");
 			driver.findElement(saveHostButton).click();
-			Thread.sleep(2000);
+			Thread.sleep(1000);
 
 			if (driver.findElement(By.xpath("//div[@class='modal-header']//h5[contains(text(),'Error')]")).isDisplayed() == true) {
 				driver.findElement(okButtonPopup).click();
@@ -234,7 +243,7 @@ public class CreateHost {
 			Thread.sleep(500);
 			selectItemInCustomDropdown(timezoneButton, itemsTimezoneList, "(UTC-10:00) Hawaii");
 			driver.findElement(saveHostButton).click();
-			Thread.sleep(2000);
+			Thread.sleep(1000);
 
 			if (driver.findElement(By.xpath("//div[@class='modal-header']//h5[contains(text(),'Error')]")).isDisplayed() == true) {
 				driver.findElement(okButtonPopup).click();
@@ -265,7 +274,7 @@ public class CreateHost {
 			Thread.sleep(500);
 			selectItemInCustomDropdown(timezoneButton, itemsTimezoneList, "(UTC-10:00) Hawaii");
 			driver.findElement(saveHostButton).click();
-			Thread.sleep(2000);
+			Thread.sleep(1000);
 
 			if (driver.findElement(By.xpath("//div[@class='modal-header']//h5[contains(text(),'Error')]")).isDisplayed() == true) {
 				driver.findElement(okButtonPopup).click();
@@ -302,7 +311,7 @@ public class CreateHost {
 		for (WebElement item : allItems) {
 			System.out.println("Item: " + item.getText() + ".");
 
-			// 05. Kiểm tra item nào đúng với mình cần ch�?n thì click vào
+			// 05. Kiểm tra item nào đúng với mình cần ch�?n thì click vào
 			if (item.getText().equals(expectedText)) {
 				jsExecutor.executeScript("arguments[0].scrollIntoView(true);", item);
 				if (item.isDisplayed()) {
