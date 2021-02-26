@@ -95,7 +95,7 @@ public class DeleteCustomer extends AbstractTest {
 	}
 
 	@Test
-	public void TC_01_verifyEmptyToCustomerID() {
+	public void TC_001_verifyEmptyToCustomerID() {
 		deleteCustomerPage.inputToTextboxByName(driver, "cusid", "");
 		deleteCustomerPage.pressTabToTextboxByName(driver, "cusid");
 		verifyEquals(deleteCustomerPage.getErrorMessageByTextboxName(driver, "cusid"),"Customer ID is required");
@@ -118,7 +118,7 @@ public class DeleteCustomer extends AbstractTest {
 		verifyEquals(deleteCustomerPage.getErrorMessageByTextboxName(driver, "cusid"),"Customer ID can not have blank space");
 	}
 	@Test
-	public void TC_005verifyInputFirstSpaceToCustomerID() {
+	public void TC_005_verifyInputFirstSpaceToCustomerID() {
 		deleteCustomerPage.inputToTextboxByName(driver, "cusid", " 12345");
 		verifyEquals(deleteCustomerPage.getErrorMessageByTextboxName(driver, "cusid"), "First character can not have space");
 	}

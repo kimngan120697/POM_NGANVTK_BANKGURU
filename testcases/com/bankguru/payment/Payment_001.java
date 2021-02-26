@@ -35,7 +35,7 @@ public class Payment_001 extends AbstractTest {
 
 	@Parameters({ "browser" })
 	@BeforeTest
-	public void beforeTest(@Optional("firefox") String browserName) {
+	public void beforeTest(String browserName) {
 		driver = getBrowserDriver(browserName);
 
 		// Create New Customer data

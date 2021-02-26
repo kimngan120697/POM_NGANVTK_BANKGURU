@@ -11,20 +11,20 @@
 			<class name="com.bankguru.customer.NewCustomer" />
 			<class name="com.bankguru.customer.EditCustomer" />
 			<class name="com.bankguru.customer.DeleteCustomer" />
-			<class name="com.bankguru.customer.NewCustomer" />
-			<class name="com.vnib.logcenter.CreateHost" />
+			<class name="com.bankguru.payment.Payment_001" />
+			<class name="com.bankguru.login.ChangePassword" />
 		</classes>
 	</test>
-<!-- 	<test name="RUN ON CHROME"> -->
-<!-- 		<parameter name="browser" value="chrome" /> -->
-<!-- 		<classes> -->
-<!-- 			<class name="com.bankguru.customer.NewCustomer" /> -->
-<!-- 			<class name="com.bankguru.customer.EditCustomer" /> -->
-<!-- 			<class name="com.bankguru.customer.DeleteCustomer" /> -->
-<!-- 			<class name="com.bankguru.payment.Payment_001" /> -->
-<!-- 			<class name="com.bankguru.login.ChangePassword" /> -->
-<!-- 		</classes> -->
-<!-- 	</test> -->
+	<test name="RUN ON CHROME">
+		<parameter name="browser" value="chrome" />
+		<classes>
+			<class name="com.bankguru.customer.NewCustomer" />
+			<class name="com.bankguru.customer.EditCustomer" />
+			<class name="com.bankguru.customer.DeleteCustomer" />
+			<class name="com.bankguru.payment.Payment_001" />
+			<class name="com.bankguru.login.ChangePassword" />
+		</classes>
+	</test>
 </suite> <!-- Suite -->
 
 
